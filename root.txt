@@ -1,0 +1,14 @@
+root
+ファイル構成（GitHub Pages用）
+/ (リポジトリルート)
+├── index.html
+├── midi.html
+├── soundfont.html
+├── midis/
+│   ├── zpg_blackmidi01.mid
+│   ├── jrmelody_arranged.mid
+│   └── game_intro.mid
+└── soundfonts/
+    ├── zpg_sf9kx2.sf2
+    ├── synmallet3.sf2
+    └── jpsaw.sf2
