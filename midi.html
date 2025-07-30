@@ -1,55 +1,104 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MIDI配布 - zpgilo39</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Azapon MIDI 配布ページ</title>
+  <link rel="icon" href="../images/azarasi.png" type="image/png" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet" />
   <style>
     body {
-      font-family: "Segoe UI", sans-serif;
-      background-color: #fafafa;
+      background: linear-gradient(135deg, #001f3f, #005f99);
+      font-family: 'Helvetica Neue', sans-serif;
+      color: #e0f7fa;
+      min-height: 100vh;
       padding: 2rem;
-      color: #222;
     }
-    h1 {
+    .box {
+      background: rgba(0, 63, 127, 0.5);
+      border-radius: 12px;
+      box-shadow: 0 0 20px #00c8ff88 inset;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 2rem;
+    }
+    h1, h2 {
+      color: #00e5ff;
+      text-shadow: 0 0 6px #00e5ff;
       text-align: center;
-      font-size: 2rem;
     }
     ul {
-      max-width: 600px;
-      margin: 2rem auto;
-      padding: 0;
       list-style: none;
+      padding-left: 0;
+      margin-top: 2rem;
     }
     li {
-      background: #e0f7fa;
-      margin: 1rem 0;
-      padding: 1rem;
-      border-radius: 8px;
+      background: rgba(0, 191, 255, 0.15);
+      margin-bottom: 1rem;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 0 8px #00bfff88;
+      transition: background-color 0.3s ease;
+    }
+    li:hover {
+      background: rgba(0, 191, 255, 0.3);
     }
     a {
-      text-decoration: none;
-      color: #007c91;
+      color: #80d8ff;
       font-weight: bold;
+      text-decoration: none;
+      font-size: 1.1rem;
+      user-select: text;
     }
     a:hover {
+      color: #c0f9ff;
       text-decoration: underline;
     }
     .back {
       display: block;
       text-align: center;
       margin-top: 3rem;
+      font-size: 1rem;
+      color: #66e0ff;
+      text-decoration: none;
+      user-select: text;
+      transition: color 0.3s ease;
+    }
+    .back:hover {
+      color: #aef4ff;
+      text-decoration: underline;
+    }
+    p.footer-quote {
+      margin-top: 3rem;
+      font-style: italic;
+      text-align: center;
+      color: #00ffd5;
+      text-shadow: 0 0 10px #00fff0;
+      user-select: text;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
-  <h1>🎼 MIDI配布ページ</h1>
-  <ul>
-    <li><a href="midis/miditrailtester.mid" download>miditrailtester.mid</a> - 超密度ラグテスター</li>
-    <li><a href="midis/engine.mid" download>engine.mid</a> - 銃の音がするラグテスター</li>
-    <li><a href="midis/Azarasimidi's Lagtester.zip" download>Azarasimidi's Lagtester.zip</a> - Azaponのラグテスター総集編です miditrailtester.midも入ってます</li>
-    <!-- 追加自由 -->
-  </ul>
-  <a href="index.html" class="back">← トップページに戻る</a>
+  <div class="box">
+    <h1>🎼 Azapon MIDI配布ページ</h1>
+
+    <ul>
+      <li>
+        <a href="midis/miditrailtester.mid" download>miditrailtester.mid</a> - 超密度ラグテスター
+      </li>
+      <li>
+        <a href="midis/engine.mid" download>engine.mid</a> - 銃の音がするラグテスター
+      </li>
+      <li>
+        <a href="midis/Azarasimidi's Lagtester.zip" download>Azarasimidi's Lagtester.zip</a> - Azaponのラグテスター総集編です miditrailtester.midも入ってます
+      </li>
+      <!-- ここに自由に追加してください -->
+    </ul>
+
+    <a href="index.html" class="back">← トップページに戻る</a>
+
+    <p class="footer-quote">「Azaponの魔法でMIDIの世界を旅しよう」</p>
+  </div>
 </body>
 </html>
