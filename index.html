@@ -8,7 +8,7 @@
     body {
       font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
       margin: 0;
-      padding-bottom: 60px;
+      padding-bottom: 80px;
       background: linear-gradient(135deg, #001f3f, #005f99);
       color: #e0f7fa;
       display: flex;
@@ -103,6 +103,26 @@
       fill: currentColor;
       vertical-align: middle;
     }
+    .download-links {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .download-links a {
+      display: inline-block;
+      background-color: #007acc;
+      color: white;
+      padding: 12px 24px;
+      margin: 10px;
+      border-radius: 10px;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 4px 10px #005c99;
+      transition: background 0.3s ease, transform 0.2s ease;
+    }
+    .download-links a:hover {
+      background-color: #0099ff;
+      transform: scale(1.05);
+    }
     footer {
       position: fixed;
       bottom: 0;
@@ -133,6 +153,7 @@
     <h1>AzarasiMIDI Official Web</h1>
     <div class="subtitle">🐧 BlackMIDIとMIDIビジュアライザーの魔術師</div>
   </header>
+
   <main>
     <p>🐧 こんにちは！Azaponの自作サイトへようこそ！</p>
     <p>ここではBlackMIDIやMIDI関連の遊びと技術を詰め込んでいます。</p>
@@ -141,6 +162,11 @@
     <p>このサイトは、MIDIビジュアライザーの魔術師、Azaponが織りなす音と光の物語。あなたも一緒に旅に出ませんか？</p>
 
     <p class="azapon-quote">「アザラシのようにマイペースに、でも世界は広くて冒険は終わらない」</p>
+
+    <div class="download-links">
+      <a href="midi.html">🎼 MIDI配布ページへ</a>
+      <a href="soundfont.html">🧩 サウンドフォント配布ページへ</a>
+    </div>
 
     <div class="sns-links" aria-label="SNSリンク">
       <a href="https://www.youtube.com/@seal-blacker" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
@@ -162,4 +188,3 @@
   </footer>
 </body>
 </html>
-
