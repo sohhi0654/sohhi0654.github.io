@@ -3,51 +3,68 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>SoundFont配布 - zpgilo39</title>
+  <title>SoundFont 配布</title>
+  <link rel="icon" href="../images/azarasi.png" type="image/png" />
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
   <style>
     body {
-      font-family: "Segoe UI", sans-serif;
-      background-color: #fff3e0;
+      background: linear-gradient(135deg, #001f3f, #005f99);
+      font-family: 'Helvetica Neue', sans-serif;
+      color: #e0f7fa;
+    }
+    .box {
+      background: rgba(0, 63, 127, 0.5);
+      border-radius: 12px;
+      box-shadow: 0 0 20px #00c8ff88 inset;
       padding: 2rem;
-      color: #333;
     }
-    h1 {
-      text-align: center;
-      font-size: 2rem;
+    h1, h2 {
+      color: #00e5ff;
+      text-shadow: 0 0 6px #00e5ff;
     }
-    ul {
-      max-width: 600px;
-      margin: 2rem auto;
-      padding: 0;
-      list-style: none;
+    textarea, input {
+      background-color: #f0fcff;
+      color: #003f7f;
     }
-    li {
-      background: #ffe0b2;
-      margin: 1rem 0;
-      padding: 1rem;
-      border-radius: 8px;
+    textarea::placeholder, input::placeholder {
+      color: #888;
+    }
+    button:disabled {
+      background-color: #666;
     }
     a {
-      text-decoration: none;
-      color: #ef6c00;
-      font-weight: bold;
-    }
-    a:hover {
+      color: #80d8ff;
       text-decoration: underline;
     }
-    .back {
-      display: block;
-      text-align: center;
-      margin-top: 3rem;
+    a:hover {
+      color: #fff;
     }
   </style>
 </head>
-<body>
-  <h1>🧩 SoundFont配布ページ</h1>
-  <ul>
-    <li><a href="soundfonts/zunpet.zip" download>msgs.sf2</a> - Microsoft GS音色</li>
-    <!-- 追加自由 -->
-  </ul>
-  <a href="index.html" class="back">← トップページに戻る</a>
+<body class="min-h-screen p-6">
+
+  <div class="max-w-4xl mx-auto box">
+    <div class="flex items-center space-x-4 mb-4">
+      <img src="../images/azarasi.png" alt="Azapon Icon" class="w-14 h-14 rounded-full border-2 border-cyan-300 shadow-md">
+      <h1 class="text-3xl font-bold">Azapon MIDI & SoundFont 配布</h1>
+    </div>
+
+    <p class="mb-6">🎹 BlackMIDIと遊ぶだけじゃない！Azapon厳選のSoundFontもここに集結！</p>
+
+    <div class="mb-8">
+      <h2 class="text-xl mb-2">🎵 SoundFontコレクション</h2>
+      <ul class="list-disc pl-6 space-y-2">
+        <li><a href="soundfonts/zunpet.zip" download>msgs.sf2</a> - Microsoft GS音色風 SoundFont</li>
+        <!-- ここに追加していけるよ -->
+      </ul>
+    </div>
+
+    <div class="text-center mt-8">
+      <a href="index.html" class="inline-block text-cyan-200 hover:text-white">← トップページに戻る</a>
+    </div>
+
+    <p class="text-center italic text-cyan-300 mt-10">「Azaponの魔法で音の世界に翼を」</p>
+  </div>
+
 </body>
 </html>
