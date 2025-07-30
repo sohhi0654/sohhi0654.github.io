@@ -5,151 +5,159 @@
   <title>AzarasiMIDI Official Web</title>
   <link rel="icon" href="images/azarasi.png" type="image/png" />
   <style>
-    * {
-      margin: 0; padding: 0;
-      box-sizing: border-box;
-    }
     body {
-      font-family: 'Segoe UI', 'Yu Gothic', sans-serif;
-      background: #e0f0ff;
-      color: #333;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      margin: 0;
+      padding-bottom: 60px;
+      background: linear-gradient(135deg, #001f3f, #005f99);
+      color: #e0f7fa;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      align-items: center;
-      padding: 2rem 1rem;
-      background-image: url('images/wave-pattern.svg'); /* Azaponらしい波柄とか */
-      background-repeat: repeat;
-      background-size: 120px 120px;
+      user-select: none;
     }
     header {
-      text-align: center;
-      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      padding: 20px;
+      background: #003f7f;
+      border-bottom: 3px solid #00bfff;
+      box-shadow: 0 3px 8px rgba(0,191,255,0.7);
+      flex-wrap: wrap;
+      gap: 10px;
     }
     header img {
-      width: 140px;
-      height: 140px;
-      border-radius: 50%;
-      object-fit: cover;
-      border: 4px solid #007acc;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.25);
-      margin-bottom: 1rem;
-      filter: drop-shadow(0 0 6px #00aaff);
+      width: 70px;
+      height: 70px;
+      border-radius: 25%;
+      margin-right: 20px;
+      border: 3px solid #00d4ff;
+      box-shadow: 0 0 10px #00d4ff;
+      filter: drop-shadow(0 0 3px #00ffff);
       transition: transform 0.3s ease;
     }
     header img:hover {
-      transform: rotate(10deg) scale(1.1);
-      filter: drop-shadow(0 0 10px #00dfff);
+      transform: scale(1.15) rotate(10deg);
     }
     header h1 {
-      font-size: 2.5rem;
-      color: #007acc;
-      margin-bottom: 0.3rem;
-      text-shadow: 1px 1px 2px #003d66;
-      font-weight: 900;
-      letter-spacing: 0.1em;
+      font-size: 2.2rem;
+      margin: 0;
+      color: #00e5ff;
+      text-shadow: 0 0 6px #00e5ff;
+      flex-grow: 1;
     }
-    header p {
-      font-size: 1.2rem;
-      color: #004a8f;
-      font-style: italic;
-      text-shadow: 1px 1px 1px #aaccee;
+    header .subtitle {
+      width: 100%;
+      font-size: 1.1rem;
+      font-weight: bold;
+      color: #66e0ff;
+      text-shadow: 0 0 8px #00ffff;
+      margin-left: 90px; /* アイコン分スペース */
+      user-select: text;
     }
     main {
-      max-width: 600px;
-      width: 100%;
-      background: #ffffffdd;
+      flex-grow: 1;
+      padding: 30px 25px;
+      max-width: 900px;
+      margin: 0 auto;
+      background: rgba(0, 63, 127, 0.4);
       border-radius: 15px;
-      padding: 2rem 2.5rem;
-      box-shadow: 0 6px 20px rgba(0,0,0,0.15);
-      margin-bottom: 2rem;
-      text-align: center;
-      line-height: 1.8;
-      font-size: 1.1rem;
-      color: #003355;
-      user-select: none;
+      box-shadow: 0 0 20px #00c8ff88 inset;
     }
-    main strong {
-      color: #007acc;
-      font-weight: 900;
+    main p {
+      font-size: 1.3rem;
+      line-height: 1.7;
+      margin-bottom: 1.4em;
+      text-shadow: 0 0 2px #003c54;
+    }
+    main p.azapon-quote {
+      font-style: italic;
+      font-weight: bold;
+      color: #00ffd5;
+      text-shadow: 0 0 10px #00fff0;
+      margin-top: 2em;
+      user-select: text;
     }
     .sns-links {
+      margin-top: 40px;
       display: flex;
+      gap: 30px;
       justify-content: center;
-      gap: 2rem;
-      margin-bottom: 2rem;
     }
     .sns-links a {
-      display: inline-block;
-      width: 48px;
-      height: 48px;
-      color: #007acc;
-      transition: color 0.3s ease;
+      color: #00bfff;
+      text-decoration: none;
+      transition: color 0.35s ease;
+      display: inline-flex;
+      align-items: center;
+      filter: drop-shadow(0 0 2px #00bfff88);
     }
     .sns-links a:hover {
-      color: #004a8f;
+      color: #66e0ff;
+      filter: drop-shadow(0 0 6px #66e0ff);
       transform: scale(1.15);
     }
     .sns-links svg {
-      width: 100%;
-      height: 100%;
+      width: 32px;
+      height: 32px;
       fill: currentColor;
-      filter: drop-shadow(0 0 2px #00aaff);
+      vertical-align: middle;
     }
     footer {
-      font-size: 0.9rem;
-      color: #555;
-      text-align: center;
-      padding: 1rem 0 0 0;
+      position: fixed;
+      bottom: 0;
+      left: 0;
       width: 100%;
-      border-top: 2px solid #007acc;
+      background: #00273b;
+      color: #66cce8cc;
+      font-size: 0.9rem;
+      text-align: center;
+      padding: 10px 0;
+      border-top: 1px solid #004d6a;
       user-select: none;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      background: #d0eaff;
+      text-shadow: 0 0 3px #00364d;
+      font-family: 'Courier New', Courier, monospace;
+    }
+    footer::before {
+      content: "";
+      display: block;
+      width: 90%;
+      margin: 0 auto 8px auto;
+      border-top: 1px solid #004d6a;
     }
   </style>
 </head>
 <body>
-
   <header>
     <img src="images/azarasi.png" alt="Azapon Icon" />
-    <h1>Azapon / AzarasiMIDI</h1>
-    <p>🐧 BlackMIDIとMIDIビジュアライザーの魔術師</p>
+    <h1>AzarasiMIDI Official Web</h1>
+    <div class="subtitle">🐧 BlackMIDIとMIDIビジュアライザーの魔術師</div>
   </header>
-
   <main>
-    <p>
-      <strong>こんにちは！</strong>  
-      音の海を泳ぎ、MIDIの世界を自由に飛び回るAzaponです。<br />
-      独自のビジュアライザーを作りつつ、BlackMIDIの魅力を追求中。<br />
-      音楽×プログラミングの「青い波」を一緒に感じてみませんか？<br /><br />
-      興味のある方はぜひSNSやYouTube、Scratchで遊びに来てね！🐧🎵
-    </p>
+    <p>🐧 こんにちは！Azaponの自作サイトへようこそ！</p>
+    <p>ここではBlackMIDIやMIDI関連の遊びと技術を詰め込んでいます。</p>
+    <p>音の海を泳ぎながら、不思議な世界を探検しよう。</p>
+
+    <p class="azapon-quote">「アザラシのようにマイペースに、でも世界は広くて冒険は終わらない」</p>
+
+    <div class="sns-links" aria-label="SNSリンク">
+      <a href="https://www.youtube.com/@seal-blacker" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+        <svg viewBox="0 0 24 24" aria-hidden="true" >
+          <path d="M10 15l5.19-3L10 9v6zM21.8 7.2c-.2-.8-.8-1.4-1.6-1.6C17.9 5 12 5 12 5s-5.9 0-8.2.6c-.8.2-1.4.8-1.6 1.6C2 9 2 12 2 12s0 3 .6 4.8c.2.8.8 1.4 1.6 1.6C6.1 19 12 19 12 19s5.9 0 8.2-.6c.8-.2 1.4-.8 1.6-1.6.6-1.8.6-4.8.6-4.8s0-3-.6-4.8z" />
+        </svg>
+      </a>
+
+      <a href="https://scratch.mit.edu/users/sohhi/" target="_blank" rel="noopener noreferrer" aria-label="Scratch">
+        <svg viewBox="0 0 24 24" aria-hidden="true" >
+          <path d="M22.3 8.7l-1.8-1.1 1.5-2.6-2.4.7-1.4-2.1-1.5 2.6-3-.1 2.3 1.3-1.6 3.4-1.5-2.6-3 1.7 1.8 1.1-1.5 2.6 2.4-.7 1.4 2.1 1.5-2.6 3 .1-2.3-1.3 1.6-3.4 1.5 2.6 3-1.7z" />
+        </svg>
+      </a>
+    </div>
   </main>
 
-  <nav class="sns-links" aria-label="SNS Links">
-    <a href="https://github.com/sohhi0654" target="_blank" rel="noopener noreferrer" aria-label="GitHub">
-      <!-- GitHub SVG -->
-      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 0a12 12 0 00-3.79 23.4c.6.11.82-.26.82-.58v-2.17c-3.34.73-4.04-1.61-4.04-1.61a3.18 3.18 0 00-1.33-1.75c-1.09-.74.08-.72.08-.72a2.52 2.52 0 011.83 1.23 2.55 2.55 0 003.48 1 2.54 2.54 0 01.76-1.6c-2.67-.3-5.47-1.34-5.47-5.93a4.63 4.63 0 011.23-3.22 4.3 4.3 0 01.12-3.17s1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23a4.3 4.3 0 01.12 3.17 4.62 4.62 0 011.23 3.22c0 4.6-2.8 5.62-5.47 5.92a2.86 2.86 0 01.82 2.21v3.28c0 .32.21.7.82.58A12 12 0 0012 0z"/></svg>
-    </a>
-    <a href="https://www.youtube.com/@seal-blacker" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
-      <!-- YouTube SVG (corrected) -->
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M10 15l5.19-3L10 9v6zM21.8 7.2c-.2-.8-.8-1.4-1.6-1.6C17.9 5 12 5 12 5s-5.9 0-8.2.6c-.8.2-1.4.8-1.6 1.6C2 9 2 12 2 12s0 3 .6 4.8c.2.8.8 1.4 1.6 1.6C6.1 19 12 19 12 19s5.9 0 8.2-.6c.8-.2 1.4-.8 1.6-1.6.6-1.8.6-4.8.6-4.8s0-3-.6-4.8z" />
-      </svg>
-    </a>
-    <a href="https://scratch.mit.edu/users/sohhi/" target="_blank" rel="noopener noreferrer" aria-label="Scratch">
-      <!-- Scratch SVG (corrected) -->
-      <svg viewBox="0 0 24 24" aria-hidden="true">
-        <path d="M22.3 8.7l-1.8-1.1 1.5-2.6-2.4.7-1.4-2.1-1.5 2.6-3-.1 2.3 1.3-1.6 3.4-1.5-2.6-3 1.7 1.8 1.1-1.5 2.6 2.4-.7 1.4 2.1 1.5-2.6 3 .1-2.3-1.3 1.6-3.4 1.5 2.6 3-1.7z" />
-      </svg>
-    </a>
-  </nav>
-
   <footer>
-    &copy; 2025 Azapon / AzarasiMIDI. All rights reserved.
+    &copy; 2025 Azapon All Rights Reserved.
   </footer>
-
 </body>
 </html>
+
