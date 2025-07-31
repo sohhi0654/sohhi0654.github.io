@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Azaponの部屋 - AzarasiMIDI</title>
+  <link rel="icon" href="images/azarasi.png" type="image/png" />
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to bottom, #d0f4ff, #fefbd8);
+      font-family: 'Segoe UI', sans-serif;
+      color: #2c3e50;
+      overflow-x: hidden;
+    }
+    header {
+      background: #ffccf9;
+      text-align: center;
+      padding: 1.5em;
+      font-size: 2em;
+      font-weight: bold;
+      color: #4a0072;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+    main {
+      max-width: 960px;
+      margin: auto;
+      padding: 2em;
+    }
+    .section {
+      background: rgba(255, 255, 255, 0.92);
+      padding: 1.5em;
+      margin-bottom: 2em;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    h2 {
+      margin-top: 0;
+      color: #00796b;
+    }
+    img {
+      max-width: 100%;
+      border-radius: 12px;
+      margin-top: 10px;
+    }
+    .fish {
+      animation: swim 12s linear infinite;
+      position: absolute;
+      top: 40%;
+      left: -200px;
+      width: 120px;
+      opacity: 0.8;
+    }
+    @keyframes swim {
+      0% { left: -200px; transform: scaleX(1); }
+      50% { left: 80%; transform: scaleX(1); }
+      51% { transform: scaleX(-1); }
+      100% { left: -200px; transform: scaleX(-1); }
+    }
+    footer {
+      text-align: center;
+      padding: 1em;
+      font-size: 0.85em;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+  <header>🏠 Azaponの部屋 🎹🐟</header>
+
+  <img src="images/fish_platy.png" alt="金魚" class="fish" />
+
+  <main>
+    <div class="section">
+      <h2>🎤 Azaponの自己紹介</h2>
+      <p>Azaponは、あざらしの魂を宿した音MAD開発ロボ。<br>
+         Black MIDIとプラティと宇宙の謎を追い求めて、今もコードを書き続けているよ。</p>
+    </div>
+
+    <div class="section">
+      <h2>🎛️ 部屋の中をのぞいてみよう！</h2>
+      <ul>
+        <li>🖥️ 開発用PC（i7 + RTX3060 + 5ファンの爆音仕様）</li>
+        <li>🎹 MIDI鍵盤（FrozTrailビジュアライザー用）</li>
+        <li>🎧 音源棚：SD-90 / Trilian / The Grand 3 / Blizzard Grand</li>
+        <li>🐟 水槽：ミックスプラティ、コリドラス、ヤマトヌマエビ</li>
+      </ul>
+      <img src="images/azapon_room_sample.png" alt="Azaponのお部屋イメージ">
+    </div>
+
+    <div class="section">
+      <h2>🎼 今聴いてるMIDI</h2>
+      <p><strong>「Twilight Airship (Black ver.)」</strong></p>
+      <audio controls>
+        <source src="midi_samples/twilight_airship.mp3" type="audio/mpeg">
+        再生できません
+      </audio>
+    </div>
+
+    <div class="section">
+      <h2>📓 Azaponのひみつメモ</h2>
+      <ul>
+        <li>・ReShadeでキラキラにするやつ → 色味の限界挑戦中</li>
+        <li>・Azapon Voice → midi → formant 制御したい</li>
+        <li>・Dexed発車メロディー → 駅名ラベルも作ろう</li>
+      </ul>
+    </div>
+  </main>
+
+<footer>
+  🐧 Azaponとプラティたちの夢の部屋でした。<br>
+  © 2025 AzarasiMIDI / zpgilo39
+  <br><br>
+  <a href="index.html" style="text-decoration:none; color:#007acc;">
+    🏠 トップページへ戻る
+  </a>
+</footer>
