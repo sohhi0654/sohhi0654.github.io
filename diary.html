@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Azaponの日記帳</title>
+  <style>
+    body { font-family: sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 1rem; }
+    h1 { color: #007acc; }
+    article { background: #eef9ff; margin-bottom: 1.5rem; padding: 1rem 1.5rem; border-radius: 8px; box-shadow: 0 0 8px #b0d4ff; }
+    time { font-size: 0.9rem; color: #666; }
+  </style>
+</head>
+<body>
+  <h1>Azaponの日記帳</h1>
+  <div id="posts"></div>
+
+  <script>
+    const posts = [
+      {
+        date: "2025-07-31",
+        title: "Azaponの日記帳スタート！",
+        content: "ここからAzaponの制作メモや音楽の小ネタを書いていくよ。楽しみだね！"
+      },
+      {
+        date: "2025-08-01",
+        title: "新しいMIDIビジュアライザー試作中",
+        content: "FrozTrail風のエフェクトを色々試しているよ。来週にはデモを公開できそう！"
+      }
+    ];
+
+    const container = document.getElementById('posts');
+    posts.forEach(post => {
+      const article = document.createElement('article');
+      article.innerHTML = `<h2>${post.title}</h2><time>${post.date}</time><p>${post.content}</p>`;
+      container.appendChild(article);
+    });
+  </script>
+</body>
+</html>
