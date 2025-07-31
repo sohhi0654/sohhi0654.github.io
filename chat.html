@@ -4,57 +4,124 @@
   <meta charset="UTF-8" />
   <title>Azaponチャット部屋</title>
   <style>
-    body { font-family: sans-serif; max-width: 700px; margin: 2rem auto; padding: 0 1rem; }
-    h1 { color: #007acc; }
-    #chat-log { background: #eef9ff; height: 400px; overflow-y: auto; padding: 1rem; border-radius: 8px; box-shadow: 0 0 8px #b0d4ff; }
-    #chat-log p { margin: 0.5rem 0; }
-    form { margin-top: 1rem; }
-    input, textarea { width: 100%; padding: 0.6rem; margin-bottom: 0.6rem; border-radius: 4px; border: 1px solid #ccc; }
-    button { background-color: #007acc; color: white; border: none; padding: 0.6rem 1.2rem; border-radius: 6px; cursor: pointer; }
-    button:hover { background-color: #005fa3; }
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      max-width: 700px;
+      margin: 2rem auto;
+      padding: 0 1rem 4rem;
+      background: linear-gradient(135deg, #001f3f, #005f99);
+      color: #e0f7fa;
+      user-select: none;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    h1 {
+      color: #00d4ff;
+      text-align: center;
+      text-shadow: 0 0 10px #00e5ff;
+      margin-bottom: 1rem;
+      user-select: text;
+    }
+    #chat-log {
+      background: rgba(0, 127, 191, 0.3);
+      height: 400px;
+      overflow-y: auto;
+      padding: 1rem;
+      border-radius: 12px;
+      box-shadow: 0 0 15px #00bfff88 inset;
+      user-select: text;
+      flex-grow: 1;
+    }
+    #chat-log p {
+      margin: 0.5rem 0;
+      line-height: 1.4;
+    }
+    form {
+      margin-top: 1rem;
+      user-select: text;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 0.6rem;
+      margin-bottom: 0.6rem;
+      border-radius: 6px;
+      border: 1px solid #3399cc;
+      font-size: 1rem;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      resize: vertical;
+      background: #007acc33;
+      color: #e0f7fa;
+      user-select: text;
+    }
+    input::placeholder, textarea::placeholder {
+      color: #a0dfffcc;
+    }
+    button {
+      background: linear-gradient(135deg, #00d4ff, #0066cc);
+      color: #e0f7fa;
+      font-weight: 900;
+      padding: 12px 24px;
+      border-radius: 30px;
+      border: none;
+      cursor: pointer;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      box-shadow: 0 0 15px #00ffffcc, 0 0 10px #00bfffaa inset;
+      transition: all 0.4s ease;
+      user-select: none;
+      width: 100%;
+    }
+    button:hover {
+      background: linear-gradient(135deg, #00ffff, #007acc);
+      color: #00f0ff;
+      box-shadow:
+        0 0 30px #00ffffee,
+        0 0 15px #00bfffcc inset,
+        0 0 15px #00ffffcc;
+      transform: scale(1.05) rotate(-3deg);
+    }
+    /* Azapon戻るボタン */
+    .azapon-return-btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #00d4ff, #0066cc);
+      color: #e0f7fa;
+      font-weight: 900;
+      padding: 14px 30px;
+      border-radius: 30px;
+      text-decoration: none;
+      box-shadow: 0 0 15px #00ffffcc, 0 0 10px #00bfffaa inset;
+      font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      transition: all 0.4s ease;
+      user-select: none;
+      margin: 2rem auto 1rem;
+      text-align: center;
+      width: fit-content;
+    }
+    .azapon-return-btn:hover {
+      background: linear-gradient(135deg, #00ffff, #007acc);
+      color: #00f0ff;
+      box-shadow:
+        0 0 30px #00ffffee,
+        0 0 15px #00bfffcc inset,
+        0 0 15px #00ffffcc;
+      transform: scale(1.1) rotate(-3deg);
+    }
   </style>
 </head>
 <body>
   <h1>Azaponチャット部屋</h1>
   <div id="chat-log"></div>
   <form id="chat-form">
-    <input type="text" id="name" placeholder="名前（ニックネーム）" required maxlength="20" />
+    <input type="text" id="name" placeholder="名前（ニックネーム）" required maxlength="20" autocomplete="off" />
     <textarea id="message" placeholder="メッセージを書こう" required rows="3" maxlength="200"></textarea>
     <button type="submit">投稿する</button>
   </form>
 
+  <p style="text-align:center;">
+    <a href="index.html" class="azapon-return-btn">← Azaponのメインページへ戻る</a>
+  </p>
+
   <script>
     const chatLog = document.getElementById('chat-log');
     const chatForm = document.getElementById('chat-form');
-    const nameInput = document.getElementById('name');
-    const messageInput = document.getElementById('message');
-
-    // 投稿はローカルストレージに保存（簡易版）
-    let chatMessages = JSON.parse(localStorage.getItem('azaponChat')) || [];
-
-    function renderMessages() {
-      chatLog.innerHTML = '';
-      chatMessages.forEach(msg => {
-        const p = document.createElement('p');
-        p.textContent = `[${msg.name}] ${msg.message}`;
-        chatLog.appendChild(p);
-      });
-      chatLog.scrollTop = chatLog.scrollHeight;
-    }
-
-    chatForm.addEventListener('submit', e => {
-      e.preventDefault();
-      const name = nameInput.value.trim();
-      const message = messageInput.value.trim();
-      if (name && message) {
-        chatMessages.push({ name, message });
-        localStorage.setItem('azaponChat', JSON.stringify(chatMessages));
-        renderMessages();
-        messageInput.value = '';
-      }
-    });
-
-    renderMessages();
-  </script>
-</body>
-</html>
+    const nameInput =
