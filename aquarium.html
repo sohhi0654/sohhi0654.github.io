@@ -2,110 +2,173 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>Azaponのプラティ水槽</title>
-<link rel="icon" href="images/azarasi.png" type="image/png">
+<title>Azapon プラティ温度モニター</title>
+<link rel="icon" type="image/png" href="images/azarasi.png">
 <style>
-  body {
+  /* 基本レイアウト */
+  body, html {
     margin: 0;
-    height: 100vh;
-    background: radial-gradient(circle at 50% 30%, #a0e0ff, #0077aa);
+    padding: 0;
+    height: 100%;
     overflow: hidden;
     font-family: "Segoe UI", sans-serif;
-    color: white;
+    background-color: #001a33; /* 深い水槽色 */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: #fff;
   }
 
+  /* 温度表示 */
+  .temp-box {
+    font-size: 2.5em;
+    font-weight: bold;
+    text-align: center;
+    padding: 20px 40px;
+    border-radius: 20px;
+    background: rgba(0,0,0,0.3);
+    transition: color 0.5s, background 0.5s;
+    z-index: 10;
+    position: relative;
+  }
+
+  .safe { color: #ffff66; }       /* 黄色系 */
+  .warning { color: #ff6600; }    /* オレンジ系 */
+
+  .status-text {
+    display: block;
+    font-size: 1.2em;
+    margin-top: 5px;
+    font-weight: bold;
+  }
+
+  /* キラキラ光の粒 */
   .particle {
     position: absolute;
-    width: 10px;
-    height: 10px;
-    background: radial-gradient(circle, rgba(255,255,255,0.8), transparent);
     border-radius: 50%;
-    animation: float 10s infinite linear;
+    opacity: 0.8;
+    pointer-events: none;
   }
 
-  @keyframes float {
-    0% { transform: translateY(100vh) translateX(0) scale(0.5); opacity: 0.3; }
-    50% { opacity: 1; }
-    100% { transform: translateY(-10vh) translateX(100px) scale(1); opacity: 0.3; }
-  }
-
-  .fish {
+  /* 光線 */
+  canvas#lightCanvas {
     position: absolute;
-    width: 50px;
-    animation: swim 6s infinite linear;
+    top:0; left:0;
+    width:100%; height:100%;
+    z-index: 0;
+    pointer-events: none;
   }
-
-  @keyframes swim {
-    0% { left: -60px; top: 30%; }
-    50% { left: 80%; top: 50%; }
-    100% { left: -60px; top: 30%; }
-  }
-
-  .temp-box {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: rgba(0, 128, 255, 0.6);
-    border-radius: 12px;
-    padding: 20px 40px;
-    font-size: 2em;
-    text-align: center;
-    box-shadow: 0 0 20px #00ffff;
-  }
-
-  .safe { color: #ffff66; }   /* 黄色系 */
-  .warning { color: #ff6600; } /* オレンジ系 */
 </style>
 </head>
 <body>
 
-<div class="temp-box" id="tempDisplay">温度: -- °C</div>
+<div class="temp-box safe" id="tempDisplay">
+  温度: -- °C<br><span class="status-text">---</span>
+</div>
 
-<img src="images/azarasi.png" class="fish" style="top: 40%; animation-duration: 8s;">
-<img src="images/azarasi.png" class="fish" style="top: 60%; animation-duration: 10s;">
+<canvas id="lightCanvas"></canvas>
 
-<script type="module">
-  // --- Firebase SDK ---
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
-  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
-
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
+  // Firebase 設定
   const firebaseConfig = {
     apiKey: "AIzaSyDUA7LwBaBupLcYMu-kzk7Hcv486IDiO8w",
     authDomain: "azapon-temp-monitor.firebaseapp.com",
-    databaseURL: "https://azapon-temp-monitor-default-rtdb.firebaseio.com/",
+    databaseURL: "https://azapon-temp-monitor-default-rtdb.firebaseio.com",
     projectId: "azapon-temp-monitor",
     storageBucket: "azapon-temp-monitor.appspot.com",
     messagingSenderId: "802815899884",
-    appId: "1:802815899884:web:be30065f2c815ad8dc0dc9",
-    measurementId: "G-RX0VL63N7G"
+    appId: "1:802815899884:web:be30065f2c815ad8dc0dc9"
   };
-
-  const app = initializeApp(firebaseConfig);
-  const db = getDatabase(app);
+  firebase.initializeApp(firebaseConfig);
+  const db = firebase.database();
 
   const tempDisplay = document.getElementById('tempDisplay');
 
-  // --- Firebaseからリアルタイム取得 ---
-  const tempRef = ref(db, 'temperature'); // Pi側で /temperature に送信する想定
-  onValue(tempRef, (snapshot) => {
+  // 温度更新関数
+  function updateTemp(temp) {
+    let statusText = '';
+    if (temp < 22) {
+      tempDisplay.className = 'temp-box warning';
+      statusText = '低すぎる！危険';
+      particleColor = '#ff6600';
+      lightColor = 'rgba(255,102,0,0.2)';
+    } else if (temp > 28) {
+      tempDisplay.className = 'temp-box warning';
+      statusText = '高すぎる！危険';
+      particleColor = '#ff6600';
+      lightColor = 'rgba(255,102,0,0.2)';
+    } else {
+      tempDisplay.className = 'temp-box safe';
+      statusText = '安全';
+      particleColor = '#ffff66';
+      lightColor = 'rgba(255,255,102,0.2)';
+    }
+    tempDisplay.innerHTML = `温度: ${temp.toFixed(1)} °C<br><span class="status-text">${statusText}</span>`;
+  }
+
+  // Firebase 監視
+  db.ref('temperature').on('value', snapshot => {
     const temp = snapshot.val();
-    tempDisplay.textContent = `温度: ${temp.toFixed(1)} °C`;
-    if(temp < 22 || temp > 28) tempDisplay.className = 'temp-box warning';
-    else tempDisplay.className = 'temp-box safe';
+    if (temp !== null) updateTemp(temp);
   });
 
-  // --- 光の粒を生成 ---
-  const particleCount = 30;
-  for(let i=0;i<particleCount;i++){
-    let p = document.createElement('div');
-    p.className = 'particle';
-    p.style.left = Math.random()*100 + 'vw';
-    p.style.animationDelay = (Math.random()*10)+'s';
-    p.style.width = 5 + Math.random()*10 + 'px';
-    p.style.height = p.style.width;
-    document.body.appendChild(p);
+  // キャンバス初期化
+  const canvas = document.getElementById('lightCanvas');
+  const ctx = canvas.getContext('2d');
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let particles = [];
+  const maxParticles = 50;
+  let particleColor = '#ffff66';
+  let lightColor = 'rgba(255,255,102,0.2)';
+
+  // 粒子生成
+  function initParticles() {
+    particles = [];
+    for (let i=0;i<maxParticles;i++){
+      particles.push({
+        x: Math.random()*canvas.width,
+        y: Math.random()*canvas.height,
+        r: Math.random()*6+2,
+        dx: (Math.random()-0.5)*0.5,
+        dy: (Math.random()-0.5)*0.5
+      });
+    }
   }
+
+  function drawParticles() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    // 光線
+    ctx.fillStyle = lightColor;
+    ctx.fillRect(0,0,canvas.width,canvas.height);
+
+    // 粒子
+    particles.forEach(p=>{
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle = particleColor;
+      ctx.fill();
+      p.x += p.dx;
+      p.y += p.dy;
+      if (p.x<0||p.x>canvas.width) p.dx*=-1;
+      if (p.y<0||p.y>canvas.height) p.dy*=-1;
+    });
+    requestAnimationFrame(drawParticles);
+  }
+
+  initParticles();
+  drawParticles();
+
+  window.addEventListener('resize', ()=>{
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    initParticles();
+  });
+
 </script>
 
 </body>
