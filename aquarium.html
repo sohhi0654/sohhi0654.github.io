@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Azapon プラティ水槽モニター</title>
+<style>
+  body {
+    margin: 0;
+    font-family: "Segoe UI", sans-serif;
+    background: linear-gradient(to bottom, #a0e0ff, #50c0ff);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    height: 100vh;
+  }
+  h1 {
+    margin-top: 20px;
+    color: #003366;
+  }
+  #water-tank {
+    position: relative;
+    width: 600px;
+    height: 400px;
+    background: rgba(255,255,255,0.2);
+    border: 3px solid #66ccff;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-top: 20px;
+  }
+  .fish {
+    position: absolute;
+    width: 40px;
+    transition: transform 1s linear;
+  }
+  #temperature {
+    margin-top: 10px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+  #status {
+    font-size: 20px;
+    font-weight: bold;
+    margin-left: 10px;
+  }
+  #history {
+    margin-top: 10px;
+    list-style: none;
+    padding: 0;
+    max-height: 150px;
+    overflow-y: auto;
+    width: 600px;
+  }
+</style>
+</head>
+<body>
+
+<h1>Azapon プラティ水槽モニター</h1>
+
+<div id="water-tank">
+  <img src="https://i.imgur.com/7kXh8yX.png" class="fish" id="fish1">
+</div>
+
+<div id="temperature">-- ℃ <span id="status">--</span></div>
+
+<ul id="history"></ul>
+
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
+  import { getDatabase, ref, onChildAdded } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-database.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDUA7LwBaBupLcYMu-kzk7Hcv486IDiO8w",
+    authDomain: "azapon-temp-monitor.firebaseapp.com",
+    databaseURL: "https://azapon-temp-monitor-default-rtdb.firebaseio.com/",
+    projectId: "azapon-temp-monitor",
+    storageBucket: "azapon-temp-monitor.appspot.com",
+    messagingSenderId: "802815899884",
+    appId: "1:802815899884:web:be30065f2c815ad8dc9",
+    measurementId: "G-RX0VL63N7G"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getDatabase(app);
+  const tempRef = ref(db, 'temperature');
+
+  const tempEl = document.getElementById('temperature');
+  const statusEl = document.getElementById('status');
+  const historyEl = document.getElementById('history');
+  const fish = document.getElementById('fish1');
+
+  function getStatus(temp) {
+    if(temp < 22) return {text: "低すぎ⚠️", color:"blue"};
+    if(temp <= 23) return {text: "やや低め", color:"yellow"};
+    if(temp <= 28) return {text: "安全✅", color:"green"};
+    if(temp <= 30) return {text: "やや高め", color:"orange"};
+    return {text: "高すぎ⚠️", color:"red"};
+  }
+
+  function moveFish() {
+    const x = Math.random() * 560; // 水槽幅 - 魚幅
+    const y = Math.random() * 360; // 水槽高さ - 魚高さ
+    fish.style.transform = `translate(${x}px, ${y}px)`;
+  }
+
+  setInterval(moveFish, 3000); // 3秒ごとに魚移動
+
+  onChildAdded(tempRef, (snapshot) => {
+    const data = snapshot.val();
+    const value = data.value;
+
+    tempEl.textContent = `${value.toFixed(1)} ℃`;
+    const status = getStatus(value);
+    statusEl.textContent = status.text;
+    statusEl.style.color = status.color;
+
+    const li = document.createElement('li');
+    const date = new Date(data.time * 1000).toLocaleTimeString();
+    li.textContent = `[${date}] ${value.toFixed(1)} ℃ - ${status.text}`;
+    li.style.color = status.color;
+    historyEl.prepend(li);
+  });
+</script>
+
+</body>
+</html>
