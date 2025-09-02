@@ -2,72 +2,73 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<title>Azapon プラティ水槽モニター</title>
+<title>Azaponのプラティ水槽</title>
+<link rel="icon" href="images/azarasi.png" type="image/png">
 <style>
   body {
     margin: 0;
-    font-family: "Segoe UI", sans-serif;
-    background: linear-gradient(to bottom, #a0e0ff, #50c0ff);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: start;
     height: 100vh;
-  }
-  h1 {
-    margin-top: 20px;
-    color: #003366;
-  }
-  #water-tank {
-    position: relative;
-    width: 600px;
-    height: 400px;
-    background: rgba(255,255,255,0.2);
-    border: 3px solid #66ccff;
-    border-radius: 10px;
+    background: radial-gradient(circle at 50% 30%, #a0e0ff, #0077aa);
     overflow: hidden;
-    margin-top: 20px;
+    font-family: "Segoe UI", sans-serif;
+    color: white;
   }
+
+  .particle {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: radial-gradient(circle, rgba(255,255,255,0.8), transparent);
+    border-radius: 50%;
+    animation: float 10s infinite linear;
+  }
+
+  @keyframes float {
+    0% { transform: translateY(100vh) translateX(0) scale(0.5); opacity: 0.3; }
+    50% { opacity: 1; }
+    100% { transform: translateY(-10vh) translateX(100px) scale(1); opacity: 0.3; }
+  }
+
   .fish {
     position: absolute;
-    width: 40px;
-    transition: transform 1s linear;
+    width: 50px;
+    animation: swim 6s infinite linear;
   }
-  #temperature {
-    margin-top: 10px;
-    font-size: 24px;
-    font-weight: bold;
+
+  @keyframes swim {
+    0% { left: -60px; top: 30%; }
+    50% { left: 80%; top: 50%; }
+    100% { left: -60px; top: 30%; }
   }
-  #status {
-    font-size: 20px;
-    font-weight: bold;
-    margin-left: 10px;
+
+  .temp-box {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0, 128, 255, 0.6);
+    border-radius: 12px;
+    padding: 20px 40px;
+    font-size: 2em;
+    text-align: center;
+    box-shadow: 0 0 20px #00ffff;
   }
-  #history {
-    margin-top: 10px;
-    list-style: none;
-    padding: 0;
-    max-height: 150px;
-    overflow-y: auto;
-    width: 600px;
-  }
+
+  .safe { color: #ffff66; }   /* 黄色系 */
+  .warning { color: #ff6600; } /* オレンジ系 */
 </style>
 </head>
 <body>
 
-<h1>Azapon プラティ水槽モニター</h1>
+<div class="temp-box" id="tempDisplay">温度: -- °C</div>
 
-<div id="water-tank">
-  <img src="https://i.imgur.com/7kXh8yX.png" class="fish" id="fish1">
-</div>
-
-<div id="temperature">-- ℃ <span id="status">--</span></div>
-
-<ul id="history"></ul>
+<img src="images/azarasi.png" class="fish" style="top: 40%; animation-duration: 8s;">
+<img src="images/azarasi.png" class="fish" style="top: 60%; animation-duration: 10s;">
 
 <script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-app.js";
-  import { getDatabase, ref, onChildAdded } from "https://www.gstatic.com/firebasejs/10.6.1/firebase-database.js";
+  // --- Firebase SDK ---
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
   const firebaseConfig = {
     apiKey: "AIzaSyDUA7LwBaBupLcYMu-kzk7Hcv486IDiO8w",
@@ -76,50 +77,35 @@
     projectId: "azapon-temp-monitor",
     storageBucket: "azapon-temp-monitor.appspot.com",
     messagingSenderId: "802815899884",
-    appId: "1:802815899884:web:be30065f2c815ad8dc9",
+    appId: "1:802815899884:web:be30065f2c815ad8dc0dc9",
     measurementId: "G-RX0VL63N7G"
   };
 
   const app = initializeApp(firebaseConfig);
   const db = getDatabase(app);
-  const tempRef = ref(db, 'temperature');
 
-  const tempEl = document.getElementById('temperature');
-  const statusEl = document.getElementById('status');
-  const historyEl = document.getElementById('history');
-  const fish = document.getElementById('fish1');
+  const tempDisplay = document.getElementById('tempDisplay');
 
-  function getStatus(temp) {
-    if(temp < 22) return {text: "低すぎ⚠️", color:"blue"};
-    if(temp <= 23) return {text: "やや低め", color:"yellow"};
-    if(temp <= 28) return {text: "安全✅", color:"green"};
-    if(temp <= 30) return {text: "やや高め", color:"orange"};
-    return {text: "高すぎ⚠️", color:"red"};
-  }
-
-  function moveFish() {
-    const x = Math.random() * 560; // 水槽幅 - 魚幅
-    const y = Math.random() * 360; // 水槽高さ - 魚高さ
-    fish.style.transform = `translate(${x}px, ${y}px)`;
-  }
-
-  setInterval(moveFish, 3000); // 3秒ごとに魚移動
-
-  onChildAdded(tempRef, (snapshot) => {
-    const data = snapshot.val();
-    const value = data.value;
-
-    tempEl.textContent = `${value.toFixed(1)} ℃`;
-    const status = getStatus(value);
-    statusEl.textContent = status.text;
-    statusEl.style.color = status.color;
-
-    const li = document.createElement('li');
-    const date = new Date(data.time * 1000).toLocaleTimeString();
-    li.textContent = `[${date}] ${value.toFixed(1)} ℃ - ${status.text}`;
-    li.style.color = status.color;
-    historyEl.prepend(li);
+  // --- Firebaseからリアルタイム取得 ---
+  const tempRef = ref(db, 'temperature'); // Pi側で /temperature に送信する想定
+  onValue(tempRef, (snapshot) => {
+    const temp = snapshot.val();
+    tempDisplay.textContent = `温度: ${temp.toFixed(1)} °C`;
+    if(temp < 22 || temp > 28) tempDisplay.className = 'temp-box warning';
+    else tempDisplay.className = 'temp-box safe';
   });
+
+  // --- 光の粒を生成 ---
+  const particleCount = 30;
+  for(let i=0;i<particleCount;i++){
+    let p = document.createElement('div');
+    p.className = 'particle';
+    p.style.left = Math.random()*100 + 'vw';
+    p.style.animationDelay = (Math.random()*10)+'s';
+    p.style.width = 5 + Math.random()*10 + 'px';
+    p.style.height = p.style.width;
+    document.body.appendChild(p);
+  }
 </script>
 
 </body>
