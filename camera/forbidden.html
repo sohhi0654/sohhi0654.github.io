@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>403 SYSTEM BREACH</title>
+<style>
+@keyframes flashbg {0%,100%{background:#0b0b0b}50%{background:#ff0000}}
+@keyframes shake {0%{transform:translate(0,0) rotate(0deg);}25%{transform:translate(-5px,5px) rotate(-5deg);}50%{transform:translate(5px,-5px) rotate(5deg);}75%{transform:translate(-5px,5px) rotate(-5deg);}100%{transform:translate(0,0) rotate(0deg);}}
+@keyframes blink {0%,50%,100%{opacity:1;}25%,75%{opacity:0;}}
+body{
+  margin:0; height:100vh; overflow:hidden;
+  font-family:monospace;
+  animation:flashbg 1s infinite;
+  color:#ff6b6b;
+  display:flex; align-items:center; justify-content:center;
+}
+.box{
+  border:5px dashed #ff0000;
+  padding:40px;
+  border-radius:16px;
+  max-width:900px;
+  text-align:center;
+  animation:shake 0.5s infinite;
+  background:#000000dd;
+}
+h1{
+  font-size:40px;
+  color:#ff3333;
+  text-shadow:0 0 12px #ff0000,0 0 24px #ff4444;
+  margin:0 0 20px 0;
+}
+p{
+  margin:10px 0;
+  font-size:18px;
+}
+.blinking{
+  animation:blink 0.5s infinite;
+  color:#ffff00;
+  font-weight:bold;
+  text-shadow:0 0 8px #ffff00;
+}
+#matrix{
+  position:absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;
+}
+canvas{display:block;}
+</style>
+</head>
+<body>
+<canvas id="matrix"></canvas>
+<div class="box">
+  <h1>!!! SYSTEM BREACH DETECTED !!!</h1>
+  <p class="blinking">!!! MALWARE / UNAUTHORIZED ACCESS !!!</p>
+  <p>All suspicious activity has been logged and traced.</p>
+  <p>Access permanently blocked. Do not attempt further intrusion!</p>
+</div>
+
+<script>
+// Matrix風背景
+const canvas = document.getElementById('matrix');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const cols = Math.floor(canvas.width/20);
+const ypos = Array(cols).fill(0);
+
+function matrix(){
+  ctx.fillStyle = 'rgba(0,0,0,0.05)';
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = '#0f0';
+  ctx.font = '20px monospace';
+  for(let i=0;i<ypos.length;i++){
+    const text = String.fromCharCode(33+Math.random()*94);
+    ctx.fillText(text,i*20,ypos[i]*20);
+    if(ypos[i]*20>canvas.height && Math.random()>0.975) ypos[i]=0;
+    else ypos[i]++;
+  }
+  requestAnimationFrame(matrix);
+}
+matrix();
+
+// 警告音 (短くビープ)
+const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+function beep(){
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = 'square';
+  osc.frequency.setValueAtTime(440, audioCtx.currentTime);
+  gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+  osc.connect(gain); gain.connect(audioCtx.destination);
+  osc.start(); osc.stop(audioCtx.currentTime+0.1);
+}
+setInterval(beep,500);
+</script>
+</body>
+</html>
