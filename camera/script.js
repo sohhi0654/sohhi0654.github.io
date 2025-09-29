@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // login.html 側
+  // login.html
   const form = document.getElementById("loginForm");
   if (form) {
     form.addEventListener("submit", async (e) => {
@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
 
-      const res = await fetch("https://YOUR-PI-TUNNEL.trycloudflare.com/auth", {
+      const res = await fetch("https://little-words-lie.loca.lt/auth", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify({username, password})
@@ -23,7 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // viewer.html 側
+  // viewer.html
   const container = document.getElementById("video-container");
   if (container) {
     const token = localStorage.getItem("token");
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    fetch(`https://YOUR-PI-TUNNEL.trycloudflare.com/stream?token=${token}`)
+    fetch(`https://little-words-lie.loca.lt/stream?token=${token}`)
       .then(r => r.json())
       .then(d => {
         if (d.url) {
@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   }
 
-  // ログアウト
+  // logout
   const logout = document.getElementById("logout");
   if (logout) {
     logout.addEventListener("click", () => {
