@@ -32,15 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    fetch(`https://azapon123.loca.lt/stream?token=${token}`)
-      .then(r => r.json())
-      .then(d => {
-        if (d.url) {
-          container.innerHTML = `<iframe src="${d.url}" width="800" height="600"></iframe>`;
-        } else {
-          alert("Forbidden!");
-        }
-      });
+    // ★ 変更点：fetch をやめて iframe に直接 /live を指定
+    container.innerHTML = `<iframe src="https://azapon123.loca.lt/live?token=${token}" width="800" height="600"></iframe>`;
   }
 
   // logout
@@ -52,4 +45,3 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
-
