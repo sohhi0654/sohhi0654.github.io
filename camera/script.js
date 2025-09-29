@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const username = document.getElementById("username").value;
       const password = document.getElementById("password").value;
 
-      const res = await fetch("https://little-words-lie.loca.lt/auth", {
+      const res = await fetch("https://azapon123.loca.lt/auth", {
         method: "POST",
         headers: {"Content-Type":"application/json"},
         body: JSON.stringify({username, password})
@@ -32,7 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
       return;
     }
 
-    fetch(`https://little-words-lie.loca.lt/stream?token=${token}`)
+    fetch(`https://azapon123.loca.lt/stream?token=${token}`)
       .then(r => r.json())
       .then(d => {
         if (d.url) {
@@ -52,3 +52,4 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 });
+
