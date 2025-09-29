@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Azapon Camera — Live Aquarium</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#0f1a2b;
+      --accent:#3ddc97;
+      --muted:#9fb0c8;
+      --text:#e6f0f6;
+    }
+    html,body{height:100%;margin:0;background:linear-gradient(180deg,#06111a 0%,var(--bg) 100%);font-family:system-ui,-apple-system,Segoe UI,Roboto,"Hiragino Kaku Gothic ProN",Meiryo,sans-serif;color:var(--text)}
+    .wrap{min-height:100%;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding:28px;}
+    header{width:100%;max-width:1100px;margin-bottom:18px;display:flex;align-items:center;gap:16px}
+    .logo{width:56px;height:56px;border-radius:10px;background:linear-gradient(135deg,#0ee6a9,#18a3ff);display:flex;align-items:center;justify-content:center;font-weight:800;color:#042;box-shadow:0 6px 18px rgba(3,15,30,.6)}
+    .title{font-size:20px;font-weight:700;letter-spacing:0.4px}
+    .subtitle{font-size:12px;color:var(--muted);margin-top:2px}
+    .card{width:100%;max-width:1100px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));border-radius:12px;padding:14px;box-shadow:0 8px 30px rgba(2,8,20,0.6);border:1px solid rgba(255,255,255,0.03)}
+    .stream-wrap{display:flex;flex-direction:column;gap:10px;align-items:center}
+    .stream{width:100%;height:0;padding-bottom:56%;position:relative;border-radius:8px;overflow:hidden;background:#000}
+    .stream img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+    .controls{display:flex;gap:8px;align-items:center;justify-content:center;margin-top:6px}
+    button{background:var(--card);color:var(--text);border:1px solid rgba(255,255,255,0.03);padding:8px 12px;border-radius:8px;cursor:pointer;font-weight:600}
+    button.primary{background:linear-gradient(90deg,var(--accent),#2ec1ff);color:#022;box-shadow:0 6px 18px rgba(16,168,127,0.12)}
+    .note{font-size:13px;color:var(--muted);text-align:center;margin-top:10px}
+    footer{margin-top:20px;color:var(--muted);font-size:12px}
+    @media(min-width:900px){.stream{padding-bottom:56%}}
+    @media(max-width:520px){.title{font-size:18px}.logo{width:48px;height:48px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">Az</div>
+      <div>
+        <div class="title">Azapon Camera</div>
+        <div class="subtitle">Live Aquarium — 水槽ライブ</div>
+      </div>
+    </header>
+
+    <main class="card">
+      <div class="stream-wrap">
+        <div class="stream" id="streamBox">
+          <!-- MJPEG stream (直接アクセス) -->
+          <img id="mjpeg" src="https://azapon.loca.lt/?action=stream" alt="Live stream" />
+        </div>
+
+        <div class="controls">
+          <button id="reload">Reload</button>
+          <button id="pop" class="primary">Open in new tab</button>
+          <button id="fit">Fit / Cover</button>
+        </div>
+
+        <div class="note">
+          これで水槽のライブ配信を表示します。問題がある場合はリロードしてください。
+          <br>
+          ※ このページのURLや配信URLは他人に教えないでね。
+        </div>
+      </div>
+    </main>
+
+    <footer>Azapon Camera • live stream</footer>
+  </div>
+
+  <script>
+    (function(){
+      const img = document.getElementById('mjpeg');
+      const reload = document.getElementById('reload');
+      const pop = document.getElementById('pop');
+      const fit = document.getElementById('fit');
+      let cover = true;
+
+      reload.addEventListener('click', () => {
+        // キャッシュ回避でリロード
+        const src = new URL(img.src);
+        src.searchParams.set('_ts', Date.now());
+        img.src = src.toString();
+      });
+
+      pop.addEventListener('click', () => {
+        window.open(img.src, '_blank');
+      });
+
+      fit.addEventListener('click', () => {
+        cover = !cover;
+        img.style.objectFit = cover ? 'cover' : 'contain';
+        fit.textContent = cover ? 'Fit / Cover' : 'Fit / Contain';
+      });
+
+      // 画像読み込みエラー時の简单なリトライ
+      let retry = 0;
+      img.addEventListener('error', () => {
+        retry++;
+        if (retry <= 5) {
+          setTimeout(() => reload.click(), 800 * retry);
+        } else {
+          const box = document.getElementById('streamBox');
+          box.innerHTML = '<div style="color:#fff;text-align:center;padding:30px">ストリームに接続できません。ネットワークや配信側を確認してください。</div>';
+        }
+      });
+
+      // 初期object-fit
+      img.style.objectFit = 'cover';
+      img.decoding = 'async';
+      img.loading = 'eager';
+    })();
+  </script>
+</body>
+</html>
