@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Azaponログイン</title>
+<style>
+  /* 背景ふわギラ */
+  body {
+    margin:0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(160deg, #a0e9f9, #8affc1);
+    overflow: hidden;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  /* 水槽風アニメーション */
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.7);
+    animation: rise 8s infinite;
+  }
+
+  @keyframes rise {
+    0% {bottom: -50px; transform: translateX(0) scale(0.5);}
+    50% {transform: translateX(50px) scale(1);}
+    100% {bottom: 100%; transform: translateX(-50px) scale(0.5);}
+  }
+
+  /* フォームカード */
+  .login-card {
+    position: relative;
+    background: rgba(255,255,255,0.9);
+    padding: 40px;
+    border-radius: 20px;
+    box-shadow: 0 0 30px rgba(255,255,255,0.7);
+    width: 300px;
+    text-align: center;
+    z-index: 10;
+  }
+
+  .login-card h1 {
+    margin-bottom: 20px;
+    color: #3ddc97;
+    text-shadow: 0 0 10px #fff, 0 0 20px #3ddc97;
+  }
+
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    outline: none;
+    font-size: 16px;
+  }
+
+  input:focus {
+    border-color: #3ddc97;
+    box-shadow: 0 0 10px #3ddc97;
+  }
+
+  button {
+    width: 100%;
+    padding: 10px;
+    background: #3ddc97;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 0 15px #3ddc97;
+    transition: 0.3s;
+  }
+
+  button:hover {
+    box-shadow: 0 0 25px #3ddc97, 0 0 50px #a0f0ff;
+  }
+
+  /* 小さなキャラアイコン */
+  .characters {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    z-index: 5;
+    pointer-events: none;
+  }
+
+  .characters img {
+    width: 40px;
+    filter: drop-shadow(0 0 5px #fff);
+    animation: float 3s ease-in-out infinite alternate;
+  }
+
+  @keyframes float {
+    0% {transform: translateY(0);}
+    100% {transform: translateY(-10px);}
+  }
+</style>
+</head>
+<body>
+
+<!-- バブルアニメーション -->
+<div class="bubble" style="width:15px;height:15px;left:10%;animation-delay:0s;"></div>
+<div class="bubble" style="width:20px;height:20px;left:50%;animation-delay:2s;"></div>
+<div class="bubble" style="width:10px;height:10px;left:80%;animation-delay:1s;"></div>
+
+<div class="login-card">
+  <h1>Azaponログイン</h1>
+  <input type="text" id="username" placeholder="ユーザー名">
+  <input type="password" id="password" placeholder="パスワード">
+  <button onclick="login()">ログイン</button>
+</div>
+
+<!-- キャラクターアイコン -->
+<div class="characters">
+  <img src="images/platy.png" alt="プラティ">
+  <img src="images/green_tetra.png" alt="グリーンテトラ">
+  <img src="images/otocinclus.png" alt="オトシンクルス">
+</div>
+
+<!-- Firebase & JS -->
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+  import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_PROJECT.firebaseapp.com",
+    projectId: "YOUR_PROJECT_ID",
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  const usernameMap = {
+    "azapon": "azapon@login.local",
+    "friend1": "friend1@login.local",
+    "friend2": "friend2@login.local"
+  };
+
+  window.login = function() {
+    const username = document.getElementById("username").value;
+    const password = document.getElementById("password").value;
+    const email = usernameMap[username];
+
+    if (!email) {
+      alert("ユーザー名が存在しません");
+      return;
+    }
+
+    signInWithEmailAndPassword(auth, email, password)
+      .then(() => {
+        window.location.href = "camera/camera.html";
+      })
+      .catch(err => {
+        alert("ログイン失敗: " + err.message);
+      });
+  };
+</script>
+
+</body>
+</html>
