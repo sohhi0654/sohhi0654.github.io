@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>メンテナンス工事中</title>
+  <style>
+    body {
+      background: #000;
+      color: #ff0;
+      font-family: "MS PGothic", sans-serif;
+      text-align: center;
+      margin: 0;
+      padding: 0;
+    }
+    .blink {
+      animation: blink 1s infinite;
+      font-size: 2.5rem;
+      color: red;
+      margin-top: 40px;
+    }
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+    .marquee {
+      background: #ff0;
+      color: #000;
+      padding: 8px;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    img {
+      margin: 20px auto;
+      display: block;
+    }
+    #countdown {
+      font-size: 2rem;
+      color: cyan;
+      margin-top: 20px;
+      text-shadow: 0 0 10px #0ff, 0 0 20px #0ff;
+    }
+    #end-date {
+      margin-top: 10px;
+      font-size: 1rem;
+      color: #9cf;
+    }
+  </style>
+</head>
+<body>
+  <div class="marquee">🚧 メンテナンス工事中！ 🚧 サービス一時停止中！ 🚧</div>
+  
+  <h1 class="blink">ただいまメンテナンス中です！</h1>
+
+  <img src="https://i.gifer.com/origin/ee/ee61ab7e6e96d8570d6d60c3840482ad_w200.gif" alt="工事中GIF">
+
+  <div id="countdown">終了まで: 計算中…</div>
+  <div id="end-date"></div>
+
+  <p>ご不便をおかけしますが<br>
+  メンテナンス完了までお待ちください。<br><br>
+  <a href="index.html">🔙 トップへ戻る</a></p>
+
+  <marquee scrollamount="10" direction="left" style="color:lime; font-size:20px;">
+    ★★★ MAINTENANCE UNDER CONSTRUCTION ★★★
+  </marquee>
+
+  <script>
+    // ===== メンテナンス終了予定日時 =====
+    const endDate = new Date("2025-11-10T18:00:00"); // ←ここを予定に合わせて変える
+
+    function updateCountdown() {
+      const now = new Date();
+      const diff = endDate - now;
+
+      if (diff <= 0) {
+        // 工事終了 → 自動で通常ページへ戻す
+        window.location.href = "index.html"; // ←いつものページに変えてね
+        return;
+      }
+
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutes = Math.floor((diff / (1000 * 60)) % 60);
+      const seconds = Math.floor((diff / 1000) % 60);
+
+      document.getElementById("countdown").innerHTML =
+        `メンテ終了まで: ${days}日 ${hours}時間 ${minutes}分 ${seconds}秒`;
+
+      document.getElementById("end-date").innerHTML =
+        `終了予定日時: ${endDate.toLocaleString("ja-JP")}`;
+    }
+
+    setInterval(updateCountdown, 1000);
+    updateCountdown();
+  </script>
+</body>
+</html>
