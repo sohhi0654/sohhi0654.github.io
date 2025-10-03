@@ -1,7 +1,21 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
+  <script>
+  fetch("/maintenance.json")
+    .then(res => res.json())
+    .then(data => {
+      if (data.maintenance === true) {
+        // Error.html 以外のページなら飛ばす
+        if (!location.pathname.endsWith("Error.html")) {
+          window.location.href = "/Error.html";
+        }
+      }
+    })
+    .catch(err => console.error("maintenance.json の読み込み失敗:", err));
+  </script>
+
+  <meta charset="UTF-8">
 <title>Azapon プラティ温度モニター</title>
 <link rel="icon" type="image/png" href="images/azarasi.png">
 <style>
