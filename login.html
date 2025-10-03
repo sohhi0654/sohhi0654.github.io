@@ -131,22 +131,26 @@
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
   import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 
+  // あなたの Firebase 設定
   const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
+    apiKey: "AIzaSyDxRGQRujfsqVfZpM49sFYFSRG8_HOuPBQ",
+    authDomain: "azaponlogin.firebaseapp.com",
+    projectId: "azaponlogin",
+    storageBucket: "azaponlogin.firebasestorage.app",
+    messagingSenderId: "102238849781",
+    appId: "1:102238849781:web:bac03b3bc8c8f508e953bc"
   };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
 
   window.login = function() {
-    const email = document.getElementById("username").value; // 入力をそのまま使う
+    const email = document.getElementById("username").value;
     const password = document.getElementById("password").value;
 
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-        window.location.href = "camera/camera.html";
+        window.location.href = "camera/camera.html"; // ログイン成功後に移動
       })
       .catch(err => {
         alert("ログイン失敗: " + err.message);
