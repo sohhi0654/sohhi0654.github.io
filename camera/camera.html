@@ -235,9 +235,10 @@
     })();
   </script>
 
-  <!-- Firebase 温度モニター -->
+  <!-- Firebase 温度モニター & 認証チェック -->
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyDUA7LwBaBupLcYMu-kzk7Hcv486IDiO8w",
@@ -251,8 +252,20 @@
 
     firebase.initializeApp(firebaseConfig);
     const db = firebase.database();
+    const auth = firebase.auth();
     const tempDisplay = document.getElementById('tempDisplay');
 
+    // 🔒 認証チェック
+    auth.onAuthStateChanged(user => {
+      if (!user) {
+        // ログインしてなければ login.html にリダイレクト
+        window.location.href = "/camera/login.html";
+      } else {
+        console.log("ログイン済み:", user.email);
+      }
+    });
+
+    // 温度表示更新
     function updateTemp(temp) {
       let statusText = '';
       if (temp < 22) {
