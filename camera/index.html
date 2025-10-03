@@ -2,13 +2,13 @@
 <html lang="ja">
 <head
     <script>
-  fetch("https://www.azarasimidi.f5.si/maintenance.json")
+  fetch("./maintenance.json")
     .then(res => res.json())
     .then(data => {
       if (data.maintenance === true) {
         // Error.html 以外のページなら飛ばす
         if (!location.pathname.endsWith("Error.html")) {
-          window.location.href = "https://www.azarasimidi.f5.si/Error.html";
+          window.location.href = "./Error.html";
         }
       }
     })
