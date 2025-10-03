@@ -259,7 +259,7 @@
     auth.onAuthStateChanged(user => {
       if (!user) {
         // ログインしてなければ login.html にリダイレクト
-        window.location.href = "/camera/login.html";
+        window.location.href = "https://www.azarasimidi.f5.si/login.html";
       } else {
         console.log("ログイン済み:", user.email);
       }
