@@ -2,7 +2,7 @@
 <html lang="ja">
 <head
     <script>
-  fetch("/maintenance.json")
+  fetch("azarasimidi.f5.si/maintenance.json")
     .then(res => res.json())
     .then(data => {
       if (data.maintenance === true) {
