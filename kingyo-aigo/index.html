@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>金魚愛護団体 — 学校の金魚当番</title>
+  <meta name="description" content="学校の金魚をみんなで守る。観察日記・お世話のコツ・SOSページを掲載する金魚愛護団体のサイトです。">
+  <link rel="icon" href="images/azarasi.png">
+  <style>
+    /* --- レトロ×かわいい×学校っぽいデザイン --- */
+    :root{
+      --bg:#fffbee;
+      --accent:#f5a623; /* gold-ish */
+      --water:#bfe9ff;
+      --ink:#2b2b2b;
+      --muted:#7a6f64;
+      --card:#ffffff;
+      --grain: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="6" height="6"><rect width="6" height="6" fill="%23ffffff"/><circle cx="3" cy="3" r="0.5" fill="%23f3efe6"/></svg>');
+    }
+    *{box-sizing:border-box}
+    body{font-family: "Hiragino Kaku Gothic ProN", Meiryo, system-ui, -apple-system, Arial; background: linear-gradient(180deg,var(--bg), #f7f3e8); color:var(--ink); margin:0; padding:0;}
+    .wrap{max-width:980px;margin:28px auto;padding:20px}
+
+    header{display:flex;align-items:center;gap:16px}
+    .logo{display:flex;align-items:center;gap:10px}
+    .badge{width:72px;height:72px;border-radius:14px;background:radial-gradient(circle at 30% 25%, #ffd6a6, var(--accent));display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.08);}
+    .badge svg{width:48px;height:48px}
+    h1{font-size:1.6rem;margin:0}
+    p.lead{margin:6px 0 0;color:var(--muted)}
+
+    nav{margin-top:14px;display:flex;gap:8px;flex-wrap:wrap}
+    a.btn{background:var(--water);padding:8px 12px;border-radius:10px;text-decoration:none;color:var(--ink);font-weight:600;border:1px solid rgba(0,0,0,.06)}
+
+    .hero{display:grid;grid-template-columns:1fr 260px;gap:16px;margin-top:18px}
+    .card{background:var(--card);padding:16px;border-radius:12px;box-shadow:0 6px 18px rgba(0,0,0,.04);background-image:var(--grain)}
+
+    .intro h2{margin:0 0 8px}
+    .retro{font-family: 'Courier New', monospace;background:linear-gradient(90deg,#fff7e0,#fff2d6);padding:6px 10px;border-radius:8px;display:inline-block;border:1px solid rgba(0,0,0,.04)}
+
+    ul.features{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0 0;padding:0;list-style:none}
+    ul.features li{background:linear-gradient(180deg,#ffffff,#fff6f0);padding:8px;border-radius:10px;border:1px solid rgba(0,0,0,.04);min-width:140px}
+
+    section{margin-top:18px}
+    .grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+    .note{font-size:0.95rem;color:var(--muted)}
+
+    .care-list{padding-left:18px}
+
+    .gallery{display:flex;gap:8px;flex-wrap:wrap}
+    .fish{width:100%;height:140px;border-radius:10px;background:linear-gradient(180deg,#ffe8d4,#ffdacc);display:flex;align-items:center;justify-content:center;font-weight:700}
+
+    form.contact{display:grid;gap:8px}
+    input,textarea{padding:10px;border-radius:8px;border:1px solid rgba(0,0,0,.08);font-size:0.95rem}
+    button.primary{background:var(--accent);border:none;padding:10px;border-radius:10px;font-weight:700}
+
+    footer{margin-top:22px;padding-top:12px;border-top:1px dashed rgba(0,0,0,.06);display:flex;justify-content:space-between;align-items:center}
+
+    /* responsive */
+    @media(max-width:820px){.hero{grid-template-columns:1fr} .grid2{grid-template-columns:1fr} .badge{width:60px;height:60px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">
+        <div class="badge" aria-hidden>
+          <!-- simple goldfish svg -->
+          <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="金魚ロゴ">
+            <ellipse cx="30" cy="34" rx="18" ry="10" fill="#ff9f3b" />
+            <circle cx="40" cy="30" r="3" fill="#2b2b2b" />
+            <path d="M14 34c-6 0-10 6-10 6s8-2 14 2c6 4 14 2 20-2 6-4 8-8 8-8s-16-6-32 0z" fill="#ffbf80" opacity="0.9"/>
+          </svg>
+        </div>
+        <div>
+          <h1>金魚愛護団体 <span style="font-size:0.8rem;color:var(--muted);">〜学校の金魚当番〜</span></h1>
+          <p class="lead">みんなで観察して、助けて、記録する。小さないのちを大切に。</p>
+        </div>
+      </div>
+    </header>
+
+    <nav>
+      <a class="btn" href="#about">活動について</a>
+      <a class="btn" href="#care">お世話のコツ</a>
+      <a class="btn" href="#sos">トラブルSOS</a>
+      <a class="btn" href="#gallery">ギャラリー</a>
+      <a class="btn" href="#contact">連絡</a>
+    </nav>
+
+    <div class="hero">
+      <div class="card intro">
+        <h2>学校の金魚当番へようこそ 🏫🐠</h2>
+        <p class="note">このサイトは、学校で金魚当番をしているみなさんへ向けた情報ページです。観察ポイントや困ったときの対応、当番の記録のつけ方などをわかりやすくまとめています。</p>
+
+        <ul class="features">
+          <li>観察日記テンプレート</li>
+          <li>水換え・フィルターのコツ</li>
+          <li>写真でわかる症状チェック</li>
+        </ul>
+
+        <section id="about">
+          <h3>この団体について</h3>
+          <p class="note">学校の金魚当番が自主的に立ち上げた、小さな保護プロジェクトです。地域や他の学校とも情報交換していきます。</p>
+        </section>
+
+        <section id="care">
+          <h3>金魚のお世話のコツ</h3>
+          <ol class="care-list">
+            <li>週に1回の水換え（全体の2〜3割）</li>
+            <li>えさは1回につき数粒、残さない量</li>
+            <li>フィルターは詰まりをチェック、勢いが強すぎる時は少し弱める</li>
+            <li>異物がえらに入っていないか定期的に観察</li>
+          </ol>
+          <p class="note">※ えらの奥にあるゴミは無理に取らず、水をきれいに保って自然に出るのを待ちましょう。傷つけると危険です。</p>
+        </section>
+
+      </div>
+
+      <aside class="card">
+        <h3>当番チェックリスト（レトロ版）</h3>
+        <p class="retro">・えさ（朝） ・水温 ・フィルター ・水面のゴミ</p>
+        <hr>
+        <h4>今日のメモ</h4>
+        <p class="note">（例）えらのそばに小さな緑色のごみを見つけた → 水換えとフィルター掃除を実施</p>
+        <hr>
+        <h4>連絡先</h4>
+        <p class="note">代表メール: kingyoaigo@gmail.com</p>
+      </aside>
+    </div>
+
+    <section id="sos" class="card">
+      <h3>トラブルSOS（すぐやること）</h3>
+      <div class="grid2">
+        <div>
+          <h4>呼吸が浅い・横になっている</h4>
+          <p class="note">水質悪化の可能性があります。すぐに部分水換え（30%以内）を行い、フィルターの吸い込み口に異物がないか確認してください。</p>
+        </div>
+        <div>
+          <h4>外傷や血が出ている</h4>
+          <p class="note">生理食塩水ではなく、まずは隔離し水温を安定させ、先生や保護者に相談してください。</p>
+        </div>
+      </div>
+      <p class="note" style="margin-top:10px">緊急で判断に迷うときは、写真を取って担当の先生に見せましょう。</p>
+    </section>
+
+    <section id="gallery">
+      <h3>ギャラリー</h3>
+      <div class="gallery">
+        <div class="fish card">元気な金魚（例）</div>
+        <div class="fish card">観察ノート写真</div>
+        <div class="fish card">当番の記録</div>
+      </div>
+    </section>
+
+    <section id="contact" class="card">
+      <h3>連絡・参加</h3>
+      <p class="note">金魚当番に参加したい／ボランティアでお手伝いしたい方は下のフォームか、直接メールください。</p>
+      <form class="contact" onsubmit="handleSubmit(event)">
+        <input id="name" placeholder="名前（ニックネーム可）" required>
+        <input id="email" placeholder="メールアドレス（任意）」>
+        <textarea id="message" rows="4" placeholder="メッセージ（例：学校名・参加希望日時など）"></textarea>
+        <div style="display:flex;gap:8px;align-items:center">
+          <button class="primary" type="submit">送信（メールを作成）</button>
+          <small class="note">※ 実際の送信はメールアプリで行われます</small>
+        </div>
+      </form>
+    </section>
+
+    <footer>
+      <div class="note">© 学校の金魚当番 — 金魚愛護団体</div>
+      <div class="note">サイト: kingyoaigo.f5.si</div>
+    </footer>
+  </div>
+
+  <script>
+    function handleSubmit(e){
+      e.preventDefault();
+      const name = document.getElementById('name').value || '無記名';
+      const email = document.getElementById('email').value;
+      const message = document.getElementById('message').value || '';
+      const to = 'kingyoaigo@gmail.com';
+      const subject = encodeURIComponent('金魚当番への問い合わせ：' + name);
+      const body = encodeURIComponent('名前: ' + name + '\nメール: ' + email + '\n\n' + message);
+      // mailto を使ってメールアプリを開く（簡易的）
+      window.location.href = `mailto:${to}?subject=${subject}&body=${body}`;
+    }
+  </script>
+</body>
+</html>
