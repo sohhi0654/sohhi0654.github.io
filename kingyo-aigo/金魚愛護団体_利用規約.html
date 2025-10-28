@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>金魚愛護団体 — 利用規約</title>
+  <style>
+    :root{--brand:#EF7A5F;--muted:#666;--bg:#fbfbfb}
+    body{font-family:system-ui,-apple-system,Helvetica,Meiryo,\"Yu Gothic\",sans-serif;background:var(--bg);color:#111;margin:0;padding:20px}
+    .wrap{max-width:900px;margin:18px auto;background:#fff;border-radius:12px;box-shadow:0 6px 24px rgba(20,20,30,0.06);padding:28px}
+    header{display:flex;align-items:center;gap:14px}
+    .logo{width:64px;height:64px;border-radius:10px;background:linear-gradient(135deg,#FFD6C4,#FFEFEA);display:flex;align-items:center;justify-content:center;font-weight:700;color:#b35}
+    h1{margin:0;font-size:1.4rem}
+    p.lead{margin:10px 0 18px;color:var(--muted)}
+    section{margin-top:18px}
+    h2{font-size:1.05rem;margin:14px 0}
+    ul{margin:8px 0 12px 1.25rem}
+    li{margin:6px 0}
+    .note{font-size:0.92rem;color:var(--muted);background:#fcfcfc;border-left:4px solid #eee;padding:10px;border-radius:6px}
+    .actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:18px}
+    .btn{display:inline-block;padding:10px 14px;border-radius:8px;text-decoration:none;border:1px solid transparent;cursor:pointer}
+    .btn-primary{background:var(--brand);color:#fff}
+    .btn-ghost{background:transparent;border:1px solid #ddd;color:var(--muted)}
+    footer{margin-top:20px;font-size:0.9rem;color:var(--muted)}
+    .agree-row{display:flex;align-items:center;gap:10px;margin-top:12px}
+    .agree-row input[type=checkbox]{width:18px;height:18px}
+    .confirm{margin-top:12px;padding:12px;border-radius:8px;background:#f7fff7;border:1px solid #e6f7e6;color:#0a6b2f;display:none}
+    pre{background:#f8f8f8;padding:10px;border-radius:6px;overflow:auto}
+    @media (max-width:560px){.wrap{padding:18px}}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <header>
+      <div class="logo">金魚</div>
+      <div>
+        <h1>金魚愛護団体 — 利用規約</h1>
+        <p class="lead">このページは、学校の金魚を大切に守るためのルールをまとめたものです。参加前に必ず読んでください。</p>
+      </div>
+    </header>
+
+    <section id="purpose">
+      <h2>第1条（目的）</h2>
+      <p>本団体は、学校の金魚の健康と安全を守り、飼育に関する知識を共有することを目的とします。会員は金魚の世話・観察・記録に協力します。</p>
+    </section>
+
+    <section id="eligibility">
+      <h2>第2条（入会資格）</h2>
+      <p>金魚を大切にできる方であれば、原則だれでも入会できます。未成年者（学校の場合は生徒）は、担当教員の許可が必要な場合があります。</p>
+    </section>
+
+    <section id="duties">
+      <h2>第3条（会員の役割・義務）</h2>
+      <ul>
+        <li>定期的な観察（例：体調・食欲・泳ぎ方のチェック）を行うこと。</li>
+        <li>水替えや餌やりなどの当番活動に協力すること。</li>
+        <li>異常を発見した場合は、すぐに担当教員または代表に報告すること。</li>
+        <li>金魚や設備を故意に傷つけたり、持ち帰ったりしないこと。</li>
+      </ul>
+    </section>
+
+    <section id="privacy">
+      <h2>第4条（個人情報の取り扱い）</h2>
+      <p>参加連絡の際にいただく氏名や連絡先は、本団体の活動連絡・緊急連絡にのみ使用します。第三者に無断で提供することはありません（ただし法令に基づく場合を除きます）。</p>
+    </section>
+
+    <section id="safety">
+      <h2>第5条（安全管理）</h2>
+      <p>会員は安全第一で行動してください。水槽近くでの走り回りや濡れた手での電源操作は危険です。お年寄りや小さな子どもが参加する場合は、保護者の同伴を推奨します。</p>
+    </section>
+
+    <section id="liability">
+      <h2>第6条（免責）</h2>
+      <p>本団体は金魚の病気・死亡・設備の故障等に関して、善管注意義務は尽くしますが、不可抗力の事象については責任を負いかねます。会員個人の持ち物の紛失や事故についても、団体は一切責任を負いません。</p>
+    </section>
+
+    <section id="agreement">
+      <h2>同意・手続き</h2>
+      <p class="note">入会には本利用規約への同意が必要です。下のチェックボックスにチェックした上で、「同意して申し込む」を押してください。学校で掲示するポスター版では、担当教員に口頭で同意を伝える方式でもかまいません。</p>
+
+      <div class="agree-row">
+        <input id="agree" type="checkbox">
+        <label for="agree">利用規約を読み、内容に同意します。</label>
+      </div>
+
+      <div class="actions">
+        <button id="applyBtn" class="btn btn-primary">同意して申し込む</button>
+        <button id="printBtn" class="btn btn-ghost">このページを印刷</button>
+        <button id="copyBtn" class="btn btn-ghost">規約をコピー</button>
+      </div>
+
+      <div id="confirmed" class="confirm">ご同意ありがとうございます。担当者に申し出てください。📣</div>
+    </section>
+
+    <section id="contact">
+      <h2>お問い合わせ</h2>
+      <p>担当：金魚当番（教員：○○先生）<br>相談・申し込みは水槽の近くで直接声をかけてください。</p>
+    </section>
+
+    <footer>
+      <p>最終更新：2025年10月28日</p>
+    </footer>
+  </div>
+
+  <script>
+    const agree = document.getElementById('agree');
+    const applyBtn = document.getElementById('applyBtn');
+    const printBtn = document.getElementById('printBtn');
+    const copyBtn = document.getElementById('copyBtn');
+    const confirmed = document.getElementById('confirmed');
+
+    applyBtn.addEventListener('click', ()=>{
+      if(!agree.checked){
+        alert('利用規約に同意してください。');
+        return;
+      }
+      confirmed.style.display = 'block';
+      // 学校ポスター向け: 実際の送信処理はここでは行いません
+    });
+
+    printBtn.addEventListener('click', ()=>{ window.print(); });
+
+    copyBtn.addEventListener('click', ()=>{
+      const text = Array.from(document.querySelectorAll('h2,p,li')).map(n=>n.innerText).join('\n\n');
+      navigator.clipboard?.writeText(text).then(()=>{
+        alert('規約テキストをコピーしました。');
+      }).catch(()=>{ alert('コピーに失敗しました。画面のテキストを手で選択してください。'); });
+    });
+  </script>
+</body>
+</html>
