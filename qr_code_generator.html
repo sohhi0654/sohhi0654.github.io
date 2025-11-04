@@ -266,9 +266,10 @@
 
     function log(s){ logEl.textContent = s; }
 
+    function escapeForWifi(s){ return s.replace(/\\/g,'\\\\').replace(/;/g,'\\;'); }
     function makeWifiString(){
-      const ssid = wifiSsid.value.replace(/\/g,'\\').replace(/;/g,'\;');
-      const pass = wifiPass.value.replace(/\/g,'\\').replace(/;/g,'\;');
+      const ssid = escapeForWifi(wifiSsid.value);
+      const pass = escapeForWifi(wifiPass.value);
       const t = wifiAuth.value;
       const hidden = wifiHidden.value === 'true' ? 'true' : 'false';
       return `WIFI:T:${t};S:${ssid};P:${pass};H:${hidden};;`;
@@ -381,9 +382,7 @@
     // initial sample
     elText.value = 'https://azarasimidi.f5.si';
     // show hint in libbox
-    libbox.textContent = '// ここに qrcode.min.js の中身を貼るとオフラインで動きます
-// 例: https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js の内容を貼る
-';
+    libbox.textContent = '// ここに qrcode.min.js の中身を貼るとオフラインで動きます\\n// 例: https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js の内容を貼る\\n';
     // try CDN load silently
     ensureLibrary().catch(()=>{});
   </script>
