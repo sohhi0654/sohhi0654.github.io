@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>QRコードメーカー — 完全版（Azapon）</title>
+  <style>
+    :root{--bg:#071226;--card:#071624;--muted:#94a3b8;--accent:#06b6d4}
+    *{box-sizing:border-box}
+    body{font-family:system-ui,-apple-system,Segoe UI,Roboto,"Hiragino Kaku Gothic ProN","Noto Sans JP",sans-serif;margin:0;background:linear-gradient(180deg,#03101a 0%,#071226 100%);color:#e6eef6;min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px}
+    .card{background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:18px;border-radius:12px;max-width:1100px;width:100%;box-shadow:0 10px 40px rgba(2,6,23,0.6)}
+    h1{margin:0 0 6px;font-size:20px}
+    p.lead{margin:0 0 16px;color:var(--muted);font-size:13px}
+    .grid{display:flex;gap:18px;flex-wrap:wrap}
+    .controls{flex:1;min-width:320px}
+    label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+    input[type=text], select, input[type=number], textarea{width:100%;padding:10px;border-radius:8px;border:1px solid rgba(255,255,255,0.04);background:transparent;color:inherit;font-size:14px}
+    input[type=color]{height:40px;padding:4px}
+    .row{display:flex;gap:8px}
+    .row > *{flex:1}
+    .small{font-size:12px;color:var(--muted)}
+    .controls .group{margin-bottom:12px}
+    button{background:var(--accent);border:none;padding:10px 14px;border-radius:10px;color:#042026;font-weight:600;cursor:pointer}
+    button.ghost{background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--muted)}
+    .preview{width:360px;min-width:240px;display:flex;flex-direction:column;align-items:center;gap:12px;padding:14px;border-radius:10px;background:linear-gradient(180deg,rgba(255,255,255,0.01),transparent)}
+    #qrcodeWrap{background:var(--bg);padding:12px;border-radius:10px}
+    #qrcode{background:white;padding:12px;border-radius:8px;display:inline-block}
+    .tools{display:flex;gap:8px;flex-wrap:wrap}
+    .themes{display:flex;gap:8px}
+    .logo-preview{width:64px;height:64px;border-radius:8px;object-fit:contain;background:rgba(255,255,255,0.02);border:1px dashed rgba(255,255,255,0.04)}
+    .mode-tabs{display:flex;gap:8px;margin-bottom:8px}
+    .tab{padding:8px 10px;border-radius:8px;background:rgba(255,255,255,0.02);cursor:pointer}
+    .tab.active{background:var(--accent);color:#001b20}
+    .note{font-size:12px;color:var(--muted)}
+    .footer{margin-top:10px;color:var(--muted);font-size:12px}
+    pre.libbox{height:120px;overflow:auto;background:#020616;padding:8px;border-radius:8px;border:1px solid rgba(255,255,255,0.03);font-size:12px}
+    @media (max-width:980px){.grid{flex-direction:column}.preview{width:100%}}
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h1>QRコードメーカー — 完全版（ロゴ / Wi‑Fi / デザイン / オフライン対応）</h1>
+    <p class="lead">友だちに配れる1ファイル体験。QRコードに中央ロゴを重ねられ、Wi‑Fi向けQR生成、テーマ切替、オフライン埋め込みサポート付き。</p>
+
+    <div class="grid">
+      <div class="controls">
+        <div class="mode-tabs">
+          <div class="tab active" data-mode="normal">通常</div>
+          <div class="tab" data-mode="wifi">Wi‑Fi</div>
+        </div>
+
+        <div id="mode-normal">
+          <div class="group">
+            <label>内容（URLやメッセージ）</label>
+            <textarea id="text" rows="3" placeholder="https://example.com や 'こんにちは！' など"></textarea>
+          </div>
+        </div>
+
+        <div id="mode-wifi" style="display:none">
+          <div class="group">
+            <label>SSID（ネットワーク名）</label>
+            <input id="wifi-ssid" type="text" placeholder="例: MyWiFi">
+          </div>
+          <div class="group">
+            <label>パスワード</label>
+            <input id="wifi-pass" type="text" placeholder="例: password123">
+          </div>
+          <div class="group row">
+            <div>
+              <label>暗号化方式</label>
+              <select id="wifi-auth"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">なし</option></select>
+            </div>
+            <div>
+              <label>隠しネットワーク</label>
+              <select id="wifi-hidden"><option value="false">いいえ</option><option value="true">はい</option></select>
+            </div>
+          </div>
+        </div>
+
+        <div class="group row">
+          <div>
+            <label>サイズ（px）</label>
+            <input type="number" id="size" value="360" min="64" max="2000">
+          </div>
+          <div>
+            <label>余白（モジュール数）</label>
+            <input type="number" id="margin" value="2" min="0" max="10">
+          </div>
+        </div>
+
+        <div class="group row">
+          <div>
+            <label>前景色</label>
+            <input type="color" id="fg" value="#000000">
+          </div>
+          <div>
+            <label>背景色</label>
+            <input type="color" id="bg" value="#ffffff">
+          </div>
+        </div>
+
+        <div class="group">
+          <label>誤り訂正レベル</label>
+          <select id="ecLevel">
+            <option value="L">L — 低（7%）</option>
+            <option value="M" selected>M — 中（15%）</option>
+            <option value="Q">Q — 高（25%）</option>
+            <option value="H">H — 最高（30%）</option>
+          </select>
+        </div>
+
+        <div class="group">
+          <label>ロゴ（中央に重ねる）</label>
+          <div class="row">
+            <input type="file" id="logoFile" accept="image/*">
+            <button id="clearLogo" class="ghost">消す</button>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
+            <img id="logoPreview" class="logo-preview" src="" alt="ロゴプレビュー" style="display:none">
+            <div class="small">初期プリセット:</div>
+            <select id="presetLogo">
+              <option value="none">— なし —</option>
+              <option value="images/azarasi.png">images/azarasi.png</option>
+              <option value="https://azarasimidi.f5.si/images/azarasi.png">Azaponサイトの画像（外部）</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="group">
+          <label>デザインモード</label>
+          <div class="themes">
+            <button data-theme="simple" class="ghost">シンプル（軽め）</button>
+            <button data-theme="azapon" class="ghost">Azapon（派手め）</button>
+            <button data-theme="rainbow" class="ghost">虹グラデ</button>
+            <button data-theme="blueglow" class="ghost">青く光る</button>
+          </div>
+        </div>
+
+        <div class="group row">
+          <button id="generate">生成する</button>
+          <button id="download" class="ghost">PNGでダウンロード</button>
+        </div>
+
+        <div class="group tools">
+          <button id="copyLink" class="ghost">画像データURLをコピー</button>
+          <button id="copyText" class="ghost">テキストをコピー</button>
+          <button id="shareWiFi" class="ghost">Wi‑Fi情報をコピー</button>
+        </div>
+
+        <div class="group">
+          <label>オフライン埋め込み（qrcodeライブラリ）</label>
+          <div class="small">既にライブラリを持っている場合はここに貼り付けて「ライブラリを適用」。貼らないとCDNから読み込みます（インターネット接続が必要）。</div>
+          <pre id="libbox" class="libbox" contenteditable></pre>
+          <div style="display:flex;gap:8px;margin-top:6px">
+            <button id="applyLib" class="ghost">ライブラリを適用</button>
+            <button id="loadCDN" class="ghost">CDNから読み込む（速い）</button>
+          </div>
+        </div>
+
+        <div class="footer">注意：ロゴを入れるとき、他人・企業の著作物を勝手に使わないでください。商用利用時は権利確認を。</div>
+      </div>
+
+      <div class="preview">
+        <div id="qrcodeWrap">
+          <div id="qrcode">QRコードがここに表示されます</div>
+        </div>
+        <div class="small">右クリックで画像保存／またはダウンロードボタンを使ってPNG保存</div>
+        <div style="width:100%">
+          <div class="small">ログ</div>
+          <div id="log" class="note"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // --- lightweight helper to dynamically load code pasted into libbox ---
+    function applyUserLibrary(code) {
+      // create blob and load as script
+      const blob = new Blob([code], {type: 'application/javascript'});
+      const url = URL.createObjectURL(blob);
+      return new Promise((resolve, reject) => {
+        const s = document.createElement('script');
+        s.src = url;
+        s.onload = () => { URL.revokeObjectURL(url); resolve(); };
+        s.onerror = (e) => { URL.revokeObjectURL(url); reject(e); };
+        document.head.appendChild(s);
+      });
+    }
+
+    // References to elements
+    const elText = document.getElementById('text');
+    const elSize = document.getElementById('size');
+    const elMargin = document.getElementById('margin');
+    const elFg = document.getElementById('fg');
+    const elBg = document.getElementById('bg');
+    const elEC = document.getElementById('ecLevel');
+    const btnGen = document.getElementById('generate');
+    const btnDownload = document.getElementById('download');
+    const btnCopyLink = document.getElementById('copyLink');
+    const btnCopyText = document.getElementById('copyText');
+    const btnShareWiFi = document.getElementById('shareWiFi');
+    const qrcodeContainer = document.getElementById('qrcode');
+    const libbox = document.getElementById('libbox');
+    const applyLib = document.getElementById('applyLib');
+    const loadCDN = document.getElementById('loadCDN');
+    const logEl = document.getElementById('log');
+
+    const tabs = document.querySelectorAll('.tab');
+    const modeNormal = document.getElementById('mode-normal');
+    const modeWifi = document.getElementById('mode-wifi');
+
+    const wifiSsid = document.getElementById('wifi-ssid');
+    const wifiPass = document.getElementById('wifi-pass');
+    const wifiAuth = document.getElementById('wifi-auth');
+    const wifiHidden = document.getElementById('wifi-hidden');
+
+    const logoFile = document.getElementById('logoFile');
+    const logoPreview = document.getElementById('logoPreview');
+    const clearLogo = document.getElementById('clearLogo');
+    const presetLogo = document.getElementById('presetLogo');
+
+    let lastDataUrl = null;
+    let currentTheme = 'simple';
+    let userLogoData = null; // data URL
+
+    // handle tabs
+    tabs.forEach(t => t.addEventListener('click', () => {
+      tabs.forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      const m = t.dataset.mode;
+      if (m === 'wifi') { modeNormal.style.display='none'; modeWifi.style.display='block'; }
+      else { modeNormal.style.display='block'; modeWifi.style.display='none'; }
+    }));
+
+    // preset logo selection
+    presetLogo.addEventListener('change', () => {
+      const v = presetLogo.value;
+      if (v === 'none') { logoPreview.style.display='none'; userLogoData = null; logoFile.value = ''; return; }
+      // try to load as url
+      logoPreview.src = v;
+      logoPreview.style.display = 'block';
+      userLogoData = v;
+    });
+
+    logoFile.addEventListener('change', (e)=>{
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      const reader = new FileReader();
+      reader.onload = (ev)=>{
+        userLogoData = ev.target.result;
+        logoPreview.src = userLogoData;
+        logoPreview.style.display = 'block';
+      };
+      reader.readAsDataURL(f);
+    });
+    clearLogo.addEventListener('click', ()=>{ userLogoData = null; logoPreview.src=''; logoPreview.style.display='none'; logoFile.value=''; presetLogo.value='none'; });
+
+    // theme buttons
+    document.querySelectorAll('[data-theme]').forEach(b=>b.addEventListener('click', ()=>{
+      currentTheme = b.dataset.theme;
+      document.querySelectorAll('[data-theme]').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+      log('テーマ: '+currentTheme);
+    }));
+
+    function log(s){ logEl.textContent = s; }
+
+    function makeWifiString(){
+      const ssid = wifiSsid.value.replace(/\/g,'\\').replace(/;/g,'\;');
+      const pass = wifiPass.value.replace(/\/g,'\\').replace(/;/g,'\;');
+      const t = wifiAuth.value;
+      const hidden = wifiHidden.value === 'true' ? 'true' : 'false';
+      return `WIFI:T:${t};S:${ssid};P:${pass};H:${hidden};;`;
+    }
+
+    // load CDN by default (if user hasn't applied library)
+    let libraryLoaded = false;
+    function ensureLibrary() {
+      if (libraryLoaded) return Promise.resolve();
+      if (typeof QRCode !== 'undefined' && QRCode.toDataURL) { libraryLoaded = true; return Promise.resolve(); }
+      // try CDN
+      return new Promise((resolve,reject)=>{
+        const s = document.createElement('script');
+        s.src = 'https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js';
+        s.onload = ()=>{ libraryLoaded = true; log('qrcodeライブラリ: CDN読み込み成功'); resolve(); };
+        s.onerror = ()=>{ log('qrcodeライブラリの読み込みに失敗しました。オフライン埋め込みを試してください。'); reject(); };
+        document.head.appendChild(s);
+      });
+    }
+
+    loadCDN.addEventListener('click', ()=>{ ensureLibrary().catch(()=>{}); });
+
+    applyLib.addEventListener('click', async ()=>{
+      const code = libbox.textContent.trim();
+      if (!code) { alert('ライブラリのコードを貼り付けてください'); return; }
+      try{ await applyUserLibrary(code); libraryLoaded = true; log('qrcodeライブラリ: ユーザーコードを適用しました'); }
+      catch(e){ alert('ライブラリの適用に失敗しました: '+e); }
+    });
+
+    function applyThemeToCanvas(ctx, size) {
+      // different theme effects can be applied; here we just return styles used when drawing overlay
+      // but since we use QRCode.toDataURL we will post-process the image with a canvas
+      return;
+    }
+
+    async function generate() {
+      await ensureLibrary().catch(()=>{});
+      if (typeof QRCode === 'undefined' || !QRCode.toDataURL) { alert('QRライブラリが読み込まれていません。ライブラリを貼るかCDNを許可してください'); return; }
+
+      let content = '';
+      const activeTab = document.querySelector('.tab.active').dataset.mode;
+      if (activeTab === 'wifi') content = makeWifiString();
+      else content = elText.value.trim();
+      if (!content) { alert('テキストまたはWi‑Fi情報を入力してください'); return; }
+
+      const opts = { errorCorrectionLevel: elEC.value, margin: parseInt(elMargin.value,10)||0, width: parseInt(elSize.value,10)||360, color: { dark: elFg.value, light: elBg.value } };
+      qrcodeContainer.innerHTML = '';
+
+      try{
+        const url = await QRCode.toDataURL(content, opts);
+        lastDataUrl = url;
+        // create an image and draw into canvas so we can composite logo and apply simple theme effects
+        const img = new Image(); img.src = url;
+        img.onload = ()=>{
+          const s = opts.width;
+          const canvas = document.createElement('canvas'); canvas.width = s; canvas.height = s;
+          const ctx = canvas.getContext('2d');
+          // background
+          ctx.fillStyle = elBg.value; ctx.fillRect(0,0,s,s);
+          // possibly apply theme background (simple)
+          if (currentTheme === 'azapon'){
+            // subtle radial gradient
+            const g = ctx.createRadialGradient(s/2,s/2,10,s/2,s/2,s/1.5*s);
+            g.addColorStop(0,'rgba(6,182,212,0.06)'); g.addColorStop(1,'rgba(12,8,30,0.0)'); ctx.fillStyle = g; ctx.fillRect(0,0,s,s);
+          } else if (currentTheme === 'rainbow'){
+            const g = ctx.createLinearGradient(0,0,s,0);
+            g.addColorStop(0,'#ff0044'); g.addColorStop(0.25,'#ff9900'); g.addColorStop(0.5,'#ffee00'); g.addColorStop(0.75,'#00cc66'); g.addColorStop(1,'#0066ff'); ctx.globalAlpha = 0.06; ctx.fillStyle = g; ctx.fillRect(0,0,s,s); ctx.globalAlpha =1;
+          } else if (currentTheme === 'blueglow'){
+            ctx.shadowBlur = 20; ctx.shadowColor = 'rgba(0,150,255,0.12)'; ctx.fillStyle = '#ffffff'; ctx.fillRect(0,0,0,0); ctx.shadowBlur=0;
+          }
+
+          // draw QR image centered
+          ctx.drawImage(img, 0, 0, s, s);
+
+          // draw logo if present
+          if (userLogoData){
+            const logo = new Image(); logo.src = userLogoData;
+            logo.onload = ()=>{
+              // logo size: up to 22% of QR width when high error correction is used; scale with ecLevel
+              const baseFactor = 0.22; const ec = elEC.value; let factor = baseFactor; if (ec==='H') factor=0.27; else if (ec==='Q') factor=0.24;
+              const lw = Math.floor(s * factor); const lh = lw;
+              const lx = Math.floor((s - lw)/2); const ly = Math.floor((s - lh)/2);
+              // draw white rounded rect behind logo to keep contrast
+              ctx.fillStyle = elBg.value; roundRect(ctx, lx-6, ly-6, lw+12, lh+12, 8); ctx.fill();
+              ctx.drawImage(logo, lx, ly, lw, lh);
+              const data = canvas.toDataURL('image/png'); renderResult(data);
+            };
+            logo.onerror = ()=>{ renderResult(canvas.toDataURL('image/png')); };
+          } else {
+            renderResult(canvas.toDataURL('image/png'));
+          }
+        };
+      } catch(e){ console.error(e); alert('生成に失敗しました: '+e); }
+    }
+
+    function roundRect(ctx, x, y, w, h, r){ const min = Math.min(w,h)/2; if (r>min) r=min; ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+
+    function renderResult(dataUrl){ lastDataUrl = dataUrl; qrcodeContainer.innerHTML = ''; const img = document.createElement('img'); img.src = dataUrl; img.alt='QR code'; img.style.maxWidth='100%'; img.style.height='auto'; qrcodeContainer.appendChild(img); log('生成完了'); }
+
+    btnGen.addEventListener('click', generate);
+
+    btnDownload.addEventListener('click', ()=>{ if (!lastDataUrl){ alert('まずQRコードを生成してください'); return; } const a = document.createElement('a'); a.href = lastDataUrl; const safeName = (elText.value||'qr').slice(0,40).replace(/[^a-zA-Z0-9\-]/g,'_')||'qr'; a.download = safeName + '.png'; document.body.appendChild(a); a.click(); a.remove(); });
+
+    btnCopyLink.addEventListener('click', async ()=>{ if (!lastDataUrl){ alert('まずQRコードを生成してください'); return; } try{ await navigator.clipboard.writeText(lastDataUrl); alert('画像データURLをコピーしました'); } catch(e){ alert('コピーに失敗しました'); } });
+
+    btnCopyText.addEventListener('click', async ()=>{ const t = elText.value.trim(); if (!t){ alert('テキストが空です'); return; } try{ await navigator.clipboard.writeText(t); alert('テキストをコピーしました'); } catch(e){ alert('コピーに失敗しました'); } });
+
+    btnShareWiFi.addEventListener('click', ()=>{ const s = makeWifiString(); navigator.clipboard.writeText(s).then(()=>alert('Wi‑Fiフォーマットをコピーしました'),()=>alert('コピーに失敗しました')); });
+
+    // initial sample
+    elText.value = 'https://azarasimidi.f5.si';
+    // show hint in libbox
+    libbox.textContent = '// ここに qrcode.min.js の中身を貼るとオフラインで動きます
+// 例: https://cdn.jsdelivr.net/npm/qrcode@1.5.1/build/qrcode.min.js の内容を貼る
+';
+    // try CDN load silently
+    ensureLibrary().catch(()=>{});
+  </script>
+</body>
+</html>
