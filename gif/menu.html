@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>魚同好会 — メニュー</title>
+<style>
+body{margin:0;padding:8px;background:url('images/bg1.png');font-family:'MS PGothic','MS Gothic',sans-serif;}
+table.menu{width:100%;border-collapse:collapse;background:#cfefff;}
+td.logo{text-align:center;padding:6px}
+a.nav{display:block;padding:6px 4px;color:#0000cc;text-decoration:none;font-weight:bold;border-top:1px solid #99c;}
+a.nav:hover{background:#fff7e6;}
+.small{display:block;margin:6px auto 8px auto;max-width:140px}
+.counter{font-size:12px;text-align:center;margin-top:8px;background:#fff;padding:6px;border:1px solid #99c}
+</style>
+</head>
+<body>
+<table class="menu" border="0" cellpadding="6" cellspacing="0">
+<tr><td class="logo"><img src="fish header.gif" alt="魚同好会" class="small"><br><img src="kingyo.gif" alt="" class="small"></td></tr>
+<tr><td><a class="nav" href="news.html" target="mainFrame">▶ 新着情報</a></td></tr>
+<tr><td><a class="nav" href="about.html" target="mainFrame">▶ 同好会とは</a></td></tr>
+<tr><td><a class="nav" href="members.html" target="mainFrame">▶ メンバー紹介</a></td></tr>
+<tr><td><a class="nav" href="gallery_stub.html" target="mainFrame">▶ 魚図鑑（GIF）</a></td></tr>
+<tr><td><a class="nav" href="activity.html" target="mainFrame">▶ 活動内容</a></td></tr>
+<tr><td><a class="nav" href="care.html" target="mainFrame">▶ お世話の方法</a></td></tr>
+<tr><td><a class="nav" href="bbs.html" target="mainFrame">▶ 掲示板</a></td></tr>
+<tr><td><a class="nav" href="links.html" target="mainFrame">▶ リンク集</a></td></tr>
+<tr><td class="counter">あなたは <div id="c"></div><script>fetch("counter.html").then(r=>r.text()).then(t=>c.innerHTML=t)</script> 人目の訪問者です。</td></tr>
+</table>
+</body>
+</html>
