@@ -1,0 +1,75 @@
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>【極秘】Azari-Live System Terminal</title>
+</head>
+<body bgcolor="#000000" text="#00ff00" style="font-family: 'Courier New', Courier, monospace; padding: 20px;">
+
+    <div id="terminal">
+        </div>
+
+    <center>
+        <div id="secret-content" style="display:none;">
+            <hr size="2" color="#00ff00" width="80%">
+            <br>
+            <table border="1" cellpadding="15" bordercolor="#00ff00">
+                <tr>
+                    <td>
+                        <center>
+                            <font size="+2">
+                                <a href="https://competing-explicitly-tournament-plastic.trycloudflare.com" target="_blank" style="color: #ffff00; text-decoration: none;">
+                                    [ ライブ映像への接続を承認 ]
+                                </a>
+                            </font>
+                        </center>
+                    </td>
+                </tr>
+            </table>
+            <br>
+            <font size="-1" color="#55ff55">Access Granted: Admin-Azari</font>
+        </div>
+    </center>
+
+    <script>
+        // 表示したいメッセージをここに書くよ
+        const textData = [
+            "> SYSTEM BOOTING...",
+            "> ESTABLISHING SECURE CONNECTION...",
+            "> LOADING CLOUDFLARE TUNNEL... OK",
+            "> RASPBERRY PI CAMERA STATUS: ONLINE",
+            "> AUTHENTICATING USER...",
+            "> ACCESS GRANTED.",
+            "> WELCOME, AGENT."
+        ];
+
+        let line = 0;
+        let charIndex = 0;
+        const terminal = document.getElementById("terminal");
+        const secretContent = document.getElementById("secret-content");
+
+        function typeLog() {
+            if (line < textData.length) {
+                if (charIndex < textData[line].length) {
+                    terminal.innerHTML += textData[line].charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeLog, 50); // タイピング速度（数字が小さいほど速いよ）
+                } else {
+                    terminal.innerHTML += "<br>";
+                    line++;
+                    charIndex = 0;
+                    setTimeout(typeLog, 500); // 行間の待ち時間
+                }
+            } else {
+                // 全部打ち終わったら隠しコンテンツを表示！
+                secretContent.style.display = "block";
+            }
+        }
+
+        // 演出スタート！
+        typeLog();
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <title>【秘密】Azari-Net 入口</title>
+    <style>
+        /* タイピング画面のスタイル */
+        #boot-screen {
+            background-color: #000000;
+            color: #00ff00;
+            font-family: 'Courier New', Courier, monospace;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            padding: 20px;
+            z-index: 9999;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body bgcolor="#ffffff" text="#000000" link="#0000ff" vlink="#800080">
+
+    <div id="boot-screen">
+        <div id="terminal"></div>
+    </div>
+
+    <div id="main-content" style="display:none;">
+        <center>
+            <h1>ようこそ、Azari-Net 秘密の入口へ</h1>
+            <hr size="2" width="100%">
+            
+            <p><b>ここは特定の許可を得た人専用のページです。</b></p>
+            
+            <table border="1" cellpadding="10">
+                <tr>
+                    <td>
+                        <font size="+1" color="red"><b>⚠️ 注意事項 ⚠️</b></font><br>
+                        <ul>
+                            <li>このURLをSNSで拡散しないでください。</li>
+                            <li>使い終わったら必ずブラウザを閉じてください。</li>
+                            <li>掲示板等への転載は厳禁です。</li>
+                        </ul>
+                    </td>
+                </tr>
+            </table>
+
+            <br>
+            <p>準備ができたら、下のリンクから入ってください。</p>
+
+            <p>
+                <font size="+2">
+                    <a href="https://hjbsdzmak.localto.net/">秘密のUVを起動する</a>
+                </font>
+            </p>
+
+            <br>
+            <hr size="1" width="50%">
+            <p>
+                <font size="-1">
+                    Since: 2026.01.10<br>
+                    Admin: Azari<br>
+                    Produced by Azamini
+                </font>
+            </p>
+            
+            <p>あなたは
+                <table border="0" cellspacing="0" cellpadding="0" style="display: inline-table; vertical-align: middle;">
+                    <tr>
+                        <td align="center">
+                            <a href="http://www.azarasimidi.f5.si/azari/">
+                                <img src="http://www.rays-counter.com/d1304_f6_001/6961c80f80bfa/" alt="アクセスカウンター" border="0">
+                            </a>
+                        </td>
+                    </tr>
+                </table>
+                人目の訪問者です
+            </p>
+        </center>
+    </div>
+
+    <script>
+        const textData = [
+            "> CONNECTING TO AZARI-NET...",
+            "> BYPASSING FIREWALL...",
+            "> DECRYPTING DATA...",
+            "> STATUS: AUTHORIZED",
+            "> OPENING GATEWAY..."
+        ];
+
+        let line = 0;
+        let charIndex = 0;
+        const terminal = document.getElementById("terminal");
+        const bootScreen = document.getElementById("boot-screen");
+        const mainContent = document.getElementById("main-content");
+
+        function typeLog() {
+            if (line < textData.length) {
+                if (charIndex < textData[line].length) {
+                    terminal.innerHTML += textData[line].charAt(charIndex);
+                    charIndex++;
+                    setTimeout(typeLog, 40);
+                } else {
+                    terminal.innerHTML += "<br>";
+                    line++;
+                    charIndex = 0;
+                    setTimeout(typeLog, 400);
+                }
+            } else {
+                // 全部打ち終わったら黒い画面を消して、白背景のページを表示！
+                setTimeout(() => {
+                    bootScreen.style.display = "none";
+                    mainContent.style.display = "block";
+                }, 800);
+            }
+        }
+
+        typeLog();
+    </script>
+
+</body>
+</html>
