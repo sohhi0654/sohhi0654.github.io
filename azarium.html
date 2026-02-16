@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Azarium Network</title>
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&display=swap');
+
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    font-family: 'PT Sans', sans-serif;
+    color: #fff;
+    overflow: hidden;
+
+    /* ===============================
+       ▼ 背景の色・雰囲気を制御している場所
+       radial-gradient の色を変えると
+       ページ全体の「感情」が変わる
+       =============================== */
+    background: radial-gradient(
+        circle at top,
+        #0b1622,
+        #0e1d30,
+        #111c2a
+    );
+}
+
+/* 雨の線 */
+.raindrop {
+    position: absolute;
+    width: 2px;
+    height: 15px;
+    background: #8fb3c9; /* 少し悲しい青 */
+    opacity: 0.35;
+    animation: fall linear infinite;
+}
+
+@keyframes fall {
+    0% { transform: translateY(-120px); opacity: 0.35; }
+    100% { transform: translateY(100vh); opacity: 0; }
+}
+
+.container {
+    text-align: center;
+    z-index: 1;
+}
+
+h1 {
+    font-size: 3em;
+    margin: 0;
+    font-weight: 700;
+    color: #9cc7ff;
+    text-shadow: 0 0 6px rgba(120,160,255,0.3);
+}
+
+p {
+    font-size: 1.3em;
+    margin: 20px 0 0;
+    color: #c8dbf0;
+}
+
+/* ▼ ページ移動ボタン */
+.nav-button {
+    display: inline-block;
+    margin-top: 28px;
+    padding: 12px 28px;
+    color: #ccefff;
+    text-decoration: none;
+    border: 1px solid rgba(180, 210, 255, 0.35);
+    border-radius: 30px;
+    font-size: 1.05em;
+    background: rgba(20, 40, 60, 0.35);
+    backdrop-filter: blur(4px);
+    transition: all 0.3s ease;
+}
+
+.nav-button:hover {
+    background: rgba(40, 80, 120, 0.45);
+    color: #ffffff;
+}
+
+.footer {
+    position: absolute;
+    bottom: 20px;
+    text-align: center;
+    font-size: 0.95em;
+    opacity: 0.6;
+    color: #9cc7ff;
+}
+</style>
+</head>
+
+<body>
+
+<!-- 雨をランダム生成 -->
+<script>
+const raindrops = 100;
+for(let i = 0; i < raindrops; i++){
+    const drop = document.createElement('div');
+    drop.className = 'raindrop';
+    drop.style.left = Math.random() * window.innerWidth + 'px';
+    drop.style.animationDuration = (0.8 + Math.random() * 1.8) + 's';
+    drop.style.height = (10 + Math.random() * 25) + 'px';
+    document.body.appendChild(drop);
+}
+</script>
+
+<div class="container">
+    <h1>Azarium Network</h1>
+    <p>
+        第2のメニューへようこそ<br>
+        今まで作ったツール一覧が見れます
+    </p>
+
+    <!-- ▼ 別ページへ移動 -->
+    <a href="tool.html" class="nav-button">ツール一覧</a>
+</div>
+
+<div class="footer">
+    Azarium Network by Azapon<br>
+    ©2026 Azarium Network.
+</div>
+
+</body>
+</html>

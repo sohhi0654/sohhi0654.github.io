@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>Azapon Tools</title>
+
+<style>
+/* ===============================
+   🌌 背景（index.html と同一）
+   =============================== */
+body {
+  margin: 0;
+  background: radial-gradient(circle at center, #111 0%, #000 70%);
+  color: #eee;
+  font-family: sans-serif;
+  transition: background 0.3s;
+}
+
+body.bg-off {
+  background: #000;
+}
+
+/* ===============================
+   🧰 ツール一覧UI
+   =============================== */
+#container {
+  padding: 20px;
+}
+
+h1 {
+  margin-top: 0;
+  font-size: 22px;
+}
+
+.tool-list {
+  list-style: none;
+  padding: 0;
+}
+
+.tool-list li {
+  margin-bottom: 10px;
+}
+
+.tool-list a {
+  display: block;
+  padding: 10px 14px;
+  background: #1a1a1a;
+  border: 1px solid #444;
+  color: #0ff;
+  text-decoration: none;
+}
+
+.tool-list a:hover {
+  background: #222;
+}
+
+/* 背景切り替えボタン */
+#bgToggle {
+  margin-top: 20px;
+  padding: 8px 12px;
+  background: #222;
+  color: #fff;
+  border: 1px solid #555;
+  cursor: pointer;
+}
+</style>
+</head>
+
+<body>
+
+<div id="container">
+  <h1>🧰 Tool List</h1>
+
+  <!-- ===============================
+       ▼ ツール一覧
+       ▼ ここに「名前」と「URL」だけ追加すればOK
+       =============================== -->
+  <ul class="tool-list">
+    <li>
+      <a href="https://www.azarasimidi.f5.si/audio_midi_converter/">MIDI 変換</a>
+    </li>
+
+    <li>
+      <a href="compress.html">画像圧縮</a>
+    </li>
+
+    <li>
+      <a href="qr_code_generator.html">QRコードジェネレーター</a>
+    </li>
+
+    <li>
+      <a href="midi.html">MIDI配布</a>
+    </li>  
+
+    <li>
+      <a href="soundfont.html">soundfont配布</a>
+    </li> 
+  </ul>
+
+  <button id="bgToggle">背景 ON / OFF</button>
+</div>
+
+    <li>
+      <a href="index.html">トップへ戻る</a>
+    </li> 
+
+    <li>
+      <a href="azarium.html">第二のトップへ戻る</a>
+    </li> 
+<script>
+/* ===============================
+   🎨 背景制御（index.html と同じ）
+   =============================== */
+const bgToggleBtn = document.getElementById("bgToggle");
+let bgEnabled = true;
+
+bgToggleBtn.onclick = () => {
+  bgEnabled = !bgEnabled;
+
+  // ★ 背景を制御しているのはここ
+  document.body.classList.toggle("bg-off", !bgEnabled);
+};
+</script>
+
+</body>
+</html>
